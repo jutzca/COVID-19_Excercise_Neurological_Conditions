@@ -95,13 +95,25 @@ label(covid19.survey.data$Situation) <- 'Situation, n (%)'
 # 5. Assign units to Age at Injury and Year of Injury
 units(covid19.survey.data$Age) <- "years"
 
-#6. Print table
+# 6. Print table
 table1::table1(~ Sex+Age+Ethnicity+Condition+Situation+Mobility_Aid+GRSI , data = covid19.survey.data)
 
 
+http://rnotr.com/likert/ggplot/barometer/likert-plots/
 
 
 
+ggplot() + geom_bar(data=highs, aes(x = outcome, y=value, fill=col), position="stack", stat="identity") +
+  geom_bar(data=lows, aes(x = outcome, y=-value, fill=col), position="stack", stat="identity") +
+  geom_hline(yintercept = 0, color =c("white")) +
+  scale_fill_identity("Percent", labels = mylevels, breaks=legend.pal, guide="legend") + 
+  theme_fivethirtyeight() + 
+  coord_flip() +
+  labs(title=mytitle, y="",x="") +
+  theme(plot.title = element_text(size=14, hjust=0.5)) +
+  theme(axis.text.y = element_text(hjust=0)) +
+  theme(legend.position = "bottom") +
+  scale_y_continuous(breaks=seq(mymin,mymax,25), limits=c(mymin,mymax))
 
 
 
