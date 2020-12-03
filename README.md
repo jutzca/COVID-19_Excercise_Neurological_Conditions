@@ -12,6 +12,7 @@ This study was funded by a research grant from XXX.
 
 ### Contact: 
 [Dr. Tom Nightingale](mailto:T.E.Nightingale@bham.ac.uk?subject=[GitHub]%20Source%20Han%20Sans)
+
 [Dr. Catherine Jutzeler](mailto:catherine.jutzeler@bsse.ethz.ch?subject=[GitHub]%20Source%20Han%20Sans)
 
 
