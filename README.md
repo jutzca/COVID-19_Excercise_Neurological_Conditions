@@ -1,1 +1,1 @@
-# COVID-19_Excercise_Neurological_Conditions
+# Effect on COVID-19 pandemic on the physical activity in patients with neurological conditions
