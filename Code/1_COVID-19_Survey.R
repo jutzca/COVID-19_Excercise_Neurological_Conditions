@@ -99,6 +99,13 @@ units(covid19.survey.data$Age) <- "years"
 table1::table1(~ Sex+Age+Ethnicity+Condition+Situation+Mobility_Aid+GRSI , data = covid19.survey.data)
 
 
+
+
+
+
+
+
+
 http://rnotr.com/likert/ggplot/barometer/likert-plots/
 
 
