@@ -93,14 +93,19 @@ dim(test)
 ##---- 2. Scaling the Numeric Features (variables) ----
 
 # Create list containing the names of independent numeric variables. 
-cols = c('Age', 'Duration_Corrected', 'Pain', 'Sedentary_Hrs_Per_Day', 'Sedentary_Hrs_Per_Day', 'Walking_wheeling_Hours_Per_Day', 'Walking_wheeling_SCORE',
+cols = c('Age', 'Duration_Corrected', 'Sedentary_Hrs_Per_Day', 'Walking_wheeling_Hours_Per_Day', 'Walking_wheeling_SCORE',
          "Light_sport_Hours_Per_Day", "Light_sport_SCORE",  "Moderate_sport_Hours_Per_Day", "Moderate_sport_SCORE", "Strenous_sport_Hours_Per_Day",
          "Strenous_sport_SCORE", "Exercise_Hours_Per_Day", "Exercise_SCORE", "LTPA_SCORE", "Light_housework_Hours_Per_Day","Light_housework_SCORE", 
          "Heavy_housework_Hours_Per_Day", "Heavy.housework_SCORE", "Home_repairs_Hours_Per_Day", "Home_repairs_SCORE", "Yard_work_Hours_Per_Day",
-         "Yard_work_SCORE", "Gardening_Hours_Per_Day", "Gardening_SCORE", "Caring_Hours_Per_Day", "Caring_SCORE",  "Household_activity_SCORE","Work_related_activity_Hours_Per_Day",  "Work_related_activity_SCORE",      
+         "Yard_work_SCORE", "Gardening_Hours_Per_Day", "Gardening_SCORE", "Caring_Hours_Per_Day", "Caring_SCORE", 
+         "Work_related_activity_Hours_Per_Day",      
        "PASIDP_SCORE",  "Leaving_the_house_to_work_Hours_Per_Day", "Fear_of_COVID_19_SCORE", "UCLA_Loneliness_SCORE", "SVS_SCORE",                           
-         "FSS_SCORE","Global_Fatigue","Anxiety_SCORE",  "Depression_SCORE", "GRSI")
+         "FSS_SCORE","Global_Fatigue",  "Depression_SCORE", "GRSI")
 
+
+# "Household_activity_SCORE"
+# Anxiety_SCORE
+# Work_related_activity_SCORE
 
 # preProcess function from the caret package to complete the scaling task. 
 # The pre-processing object is fit only to the training data.
@@ -115,13 +120,12 @@ summary(train)
 
 ##---- 3. Linear Regression ----
 
-lr = lm(unemploy ~ uempmed + psavert + pop + pce, data = train)
+lr = lm(Anxiety_SCORE ~ Age +Sex+Exercise_SCORE, data = covid19.survey.data)
 summary(lr)
 
 
 ##---- 4. Model Evaluation Metrics ----
 #Step 4.1 - create the evaluation metrics function
-
 eval_metrics = function(model, df, predictions, target){
   resids = df[,target] - predictions
   resids2 = resids**2
@@ -134,20 +138,49 @@ eval_metrics = function(model, df, predictions, target){
 
 # Step 4.2 - predicting and evaluating the model on train data
 predictions = predict(lr, newdata = train)
-eval_metrics(lr, train, predictions, target = 'unemploy')
+eval_metrics(lr, train, predictions, target = 'Pain')
 
-# Step 4.3 - predicting and evaluating the model on test data
+# Step 4.3 - predicting and evaluating the model on test data --> first numer is R2 and second RMSE
 predictions = predict(lr, newdata = test)
-eval_metrics(lr, test, predictions, target = 'unemploy')
-
-
-##---- 5. Regularization----
+eval_metrics(lr, test, predictions, target = 'Pain')
 
 
 
+##---- 5. Regularization ----
+
+cols_reg = c('LTPA_SCORE', 'pop', 'psavert', 'uempmed', 'unemploy')
+
+dummies <- dummyVars(unemploy ~ ., data = dat[,cols_reg])
+
+train_dummies = predict(dummies, newdata = train[,cols_reg])
+
+test_dummies = predict(dummies, newdata = test[,cols_reg])
+
+print(dim(train_dummies)); print(dim(test_dummies))
 
 
 
+
+
+x = as.matrix(train_dummies)
+y_train = train$unemploy
+
+x_test = as.matrix(test_dummies)
+y_test = test$unemploy
+
+lambdas <- 10^seq(2, -3, by = -.1)
+ridge_reg = glmnet(x, y_train, nlambda = 25, alpha = 0, family = 'gaussian', lambda = lambdas)
+
+summary(ridge_reg)
+
+
+
+
+
+
+
+
+###https://www.pluralsight.com/guides/linear-lasso-and-ridge-regression-with-r
 
 
 #subset data to remove NA from the y variable
