@@ -22,24 +22,25 @@
 
 ## set working directory
 
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 
 ## ---------------------------
 ## load up the packages we will need:  
 library(table1)
+library(ggplot2)
+library(likert)
+library(HH)
+library(dplyr)
 
 ## ----------------------------
 ## Install packages needed:  (uncomment as required)
 
-#if(!require(dplyr)){install.packages("dplyr")}
-#if(!require(tidyr)){install.packages("tidyr")}
-#if(!require(tidyverse)){install.packages("tidyverse")}
-#if(!require(hrbrthemes)){install.packages("hrbrthemes")}
-#if(!require(formattable)){install.packages("formattable")}
-#if(!require(viridis)){install.packages("viridis")}
+#if(!require(table1)){install.packages("table1")}
 #if(!require(ggplot2)){install.packages("ggplot2")}
-#if(!require(ggpubr)){install.packages("ggpubr")}
-#if(!require(naniar)){install.packages("naniar")}
+#if(!require(likert)){install.packages("likert")}
+#if(!require(HH)){install.packages("HH")}
+#if(!require(dplyr)){install.packages("dplyr")}
+
 
 #### ---------------------------
 #Clear working space
@@ -49,8 +50,8 @@ rm(list = ls())
 #### ---------------------------
 #Set output directorypaths
 
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 
 
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
@@ -71,7 +72,7 @@ covid19.survey.data$GRSI <- as.factor(covid19.survey.data$GRSI )
 
 covid19.survey.data$Situation <- factor(covid19.survey.data$Situation, levels = c("self-imposed isolation", "goverment-issued isolation", 
                                                                                    "social distancing", "none", "other"))
-covid19.survey.data$Mobility_Aid <- factor(covid19.survey.data$Mobility_Aidn, levels = c("manual wheelchair","powered wheelchair", "mobility scooter", "zimmer frame","walking sticks", "crutches",
+covid19.survey.data$Mobility_Aid <- factor(covid19.survey.data$Mobility_Aid, levels = c("manual wheelchair","powered wheelchair", "mobility scooter", "zimmer frame","walking sticks", "crutches",
                                                                                         "none", "other"))
 # 3. Change names of levels of variables
 levels(covid19.survey.data$Sex) <- c("Female", "Male", "Prefer not to disclose")
@@ -91,22 +92,59 @@ label(covid19.survey.data$GRSI) <- "Government Response Stringency Index, n (%)"
 label(covid19.survey.data$Condition) <- 'Condition, n (%)'
 label(covid19.survey.data$Ethnicity) <- 'Ethnicity, n (%)'
 label(covid19.survey.data$Situation) <- 'Situation, n (%)'
+label(covid19.survey.data$HAQ_SDI_Mean) <- 'HAQ SDI'
+
+
 
 # 5. Assign units to Age at Injury and Year of Injury
 units(covid19.survey.data$Age) <- "years"
 
 # 6. Print table
-table1::table1(~ Sex+Age+Ethnicity+Condition+Situation+Mobility_Aid+GRSI , data = covid19.survey.data)
+table1::table1(~ Sex+Age+Ethnicity+Condition+Situation+Mobility_Aid+GRSI+HAQ_SDI_Mean , data = covid19.survey.data)
+
+
+# 7. Draw historgrams and save plots if required
+
+histogram_HAQ_SDI_Mean<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Sex)) +                      
+  geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
+  theme_bw()
+histogram_HAQ_SDI_Mean
+
+
+##Save plot
+ggsave(
+  "drug.prevalence.7-14-30-60days.plot.sygen.pdf",
+  plot = prevalence.plot,
+  device = 'pdf',
+  path = outdir_figures,
+  scale = 1,
+  width = 4,
+  height = 4,
+  units = "in",
+  dpi = 300
+)
+
+dev.off()
 
 
 
-
-
-
-
+glimpse(covid19.survey.data)
 
 
 http://rnotr.com/likert/ggplot/barometer/likert-plots/
+
+covid19.survey.data2 <- subset(covid19.survey.data, (!(is.na(Change_in_PA))))
+                               
+
+##Calculate the proportions per group
+covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
+  group_by(Condition,Change_in_PA) %>%
+  summarise(n = n()) %>%
+  mutate(freq = n / sum(n))%>%
+  as.data.frame()
+  
+#Reformat dataframe from long to wide
+covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA, timevar = "Change_in_PA", idvar = "Condition", direction = "wide")
 
 
 
