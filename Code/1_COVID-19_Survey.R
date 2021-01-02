@@ -113,8 +113,8 @@ histogram_HAQ_SDI_Mean
 
 ##Save plot
 ggsave(
-  "drug.prevalence.7-14-30-60days.plot.sygen.pdf",
-  plot = prevalence.plot,
+  "histogram_HAQ_SDI_Meann.pdf",
+  plot = histogram_HAQ_SDI_Mean,
   device = 'pdf',
   path = outdir_figures,
   scale = 1,

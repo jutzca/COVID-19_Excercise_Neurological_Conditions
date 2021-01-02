@@ -2,8 +2,8 @@
 ##
 ## Script name: 4_Likert_graph_covid_survey
 ##
-## Purpose of script: To analyze and visualize the data from the COVID-19 survey assessing how the COVID-10 pamdemic has impacted the physical activity in patients
-##                    suffering from neurological diseases. A cross-sectional study
+## Purpose of script: To create likert graphs to visualize the physicial activity question in the COVID-19 survey
+##                    
 ##
 ## Author: Dr. Catherine Jutzeler
 ##
@@ -23,7 +23,7 @@
 
 ## set working directory
 
-setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")  #replace with your working directory
 
 ## ---------------------------
 ## load up the packages we will need:  
@@ -57,10 +57,10 @@ library(stringr)
 rm(list = ls())
 
 #### ---------------------------
-#Set output directorypaths
+#Set output directory paths
 
-outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'    #replace with your output directory paths for Figures
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'      #replace with your output directory paths for Tables
 
 
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
