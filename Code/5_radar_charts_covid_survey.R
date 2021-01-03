@@ -17,7 +17,7 @@
 ## Data source: COVID-19 survey
 ##
 ## Notes: This analysis is for the publication Nightingale et al, 2021 published in XX. [add link here]
-##        http://rnotr.com/likert/ggplot/barometer/likert-plots/
+##        https://www.data-to-viz.com/caveat/spider.html
 ##   
 #### ---------------------------
 
