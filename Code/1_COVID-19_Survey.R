@@ -22,7 +22,7 @@
 
 ## set working directory
 
-setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 
 ## ---------------------------
 ## load up the packages we will need:  
@@ -50,8 +50,8 @@ rm(list = ls())
 #### ---------------------------
 #Set output directorypaths
 
-outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 
 
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
@@ -103,23 +103,71 @@ units(covid19.survey.data$Age) <- "years"
 table1::table1(~ Sex+Age+Ethnicity+Condition+Situation+Mobility_Aid+GRSI+HAQ_SDI_Mean , data = covid19.survey.data)
 
 
-# 7. Draw historgrams and save plots if required
+# 7. Draw historgrams and save plots
 
-histogram_HAQ_SDI_Mean<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Sex)) +                      
+#---- By HAQ_SDI_Mean by sex ----
+histogram_HAQ_SDI_Mean.by_sex<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Sex)) +                      
   geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
   theme_bw()
-histogram_HAQ_SDI_Mean
+histogram_HAQ_SDI_Mean.by_sex
 
 
 ##Save plot
 ggsave(
-  "histogram_HAQ_SDI_Meann.pdf",
-  plot = histogram_HAQ_SDI_Mean,
+  "histogram_HAQ_SDI_Mean.by_sex.pdf",
+  plot = histogram_HAQ_SDI_Mean.by_sex,
   device = 'pdf',
   path = outdir_figures,
   scale = 1,
-  width = 4,
+  width = 6,
   height = 4,
+  units = "in",
+  dpi = 300
+)
+
+dev.off()
+
+#---- By HAQ_SDI_Mean by Mobility Aid ----
+
+histogram_HAQ_SDI_Mean.by_mobility_aid<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Mobility_Aid)) +                      
+  geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
+  theme_bw()
+histogram_HAQ_SDI_Mean.by_mobility_aid
+
+
+##Save plot
+ggsave(
+  "histogram_HAQ_SDI_Mean.by_mobility_aid.pdf",
+  plot = histogram_HAQ_SDI_Mean.by_mobility_aid,
+  device = 'pdf',
+  path = outdir_figures,
+  scale = 1,
+  width = 6,
+  height = 4,
+  units = "in",
+  dpi = 300
+)
+
+dev.off()
+
+
+#---- By HAQ_SDI_Mean by neurological conditions ----
+
+histogram_HAQ_SDI_Mean.by_neurol_cond<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Condition)) +                      
+  geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
+  theme_bw()
+histogram_HAQ_SDI_Mean.by_neurol_cond
+
+
+##Save plot
+ggsave(
+  "histogram_HAQ_SDI_Mean.by_neurol_cond.pdf",
+  plot = histogram_HAQ_SDI_Mean.by_neurol_cond,
+  device = 'pdf',
+  path = outdir_figures,
+  scale = 1,
+  width = 9,
+  height = 5,
   units = "in",
   dpi = 300
 )
