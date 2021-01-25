@@ -21,7 +21,7 @@
 
 ## set working directory
 
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 
 ## ---------------------------
 ## load up the packages we will need:  
@@ -33,6 +33,7 @@ library(caret)
 library(ggplot2)
 library(repr)
 library(glmnet)
+library(reshape2)
 
 
 
@@ -57,8 +58,8 @@ rm(list = ls())
 #### ---------------------------
 #Set output directorypaths
 
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 
 
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
@@ -100,14 +101,14 @@ cols = c('Age', 'Duration_Corrected', 'Sedentary_Hrs_Per_Day', 'Walking_wheeling
          "Strenous_sport_SCORE", "Exercise_Hours_Per_Day", "Exercise_SCORE", "LTPA_SCORE", "Light_housework_Hours_Per_Day","Light_housework_SCORE", 
          "Heavy_housework_Hours_Per_Day", "Heavy.housework_SCORE", "Home_repairs_Hours_Per_Day", "Home_repairs_SCORE", "Yard_work_Hours_Per_Day",
          "Yard_work_SCORE", "Gardening_Hours_Per_Day", "Gardening_SCORE", "Caring_Hours_Per_Day", "Caring_SCORE", 
-         "Work_related_activity_Hours_Per_Day",      
-       "PASIDP_SCORE",  "Leaving_the_house_to_work_Hours_Per_Day", "Fear_of_COVID_19_SCORE", "UCLA_Loneliness_SCORE", "SVS_SCORE",                           
+         "Work_related_activity_Hours_Per_Day", "Leaving_the_house_to_work_Hours_Per_Day", "Fear_of_COVID_19_SCORE", "UCLA_Loneliness_SCORE", "SVS_SCORE",                           
          "FSS_SCORE","Global_Fatigue",  "Depression_SCORE", "GRSI")
 
 
 # "Household_activity_SCORE"
 # Anxiety_SCORE
 # Work_related_activity_SCORE
+#PASIDP_SCORE
 
 # preProcess function from the caret package to complete the scaling task. 
 # The pre-processing object is fit only to the training data.
@@ -148,7 +149,7 @@ eval_metrics(lr, test, predictions, target = 'Pain')
 
 
 
-##---- 5. Regularization ----
+##---- 5. Regularization: Ridge ----
 
 cols_reg = c('LTPA_SCORE', "Anxiety_SCORE" )
 
@@ -159,9 +160,6 @@ train_dummies = predict(dummies, newdata = train[,cols_reg])
 test_dummies = predict(dummies, newdata = test[,cols_reg])
 
 print(dim(train_dummies)); print(dim(test_dummies))
-
-
-
 
 
 x = as.matrix(train_dummies)
@@ -176,7 +174,185 @@ ridge_reg = glmnet(x, y_train, nlambda = 25, alpha = 0, family = 'gaussian', lam
 summary(ridge_reg)
 
 
+cv_ridge <- cv.glmnet(x, y_train, alpha = 0, lambda = lambdas)
+optimal_lambda <- cv_ridge$lambda.min
+optimal_lambda
 
+
+# Compute R^2 from true and predicted values
+eval_results <- function(true, predicted, df) {
+  SSE <- sum((predicted - true)^2)
+  SST <- sum((true - mean(true))^2)
+  R_square <- 1 - SSE / SST
+  RMSE = sqrt(SSE/nrow(df))
+  
+  
+  # Model performance metrics
+  data.frame(
+    RMSE = RMSE,
+    Rsquare = R_square
+  )
+  
+}
+
+# Prediction and evaluation on train data
+predictions_train <- predict(ridge_reg, s = optimal_lambda, newx = x)
+eval_results(y_train, predictions_train, train)
+
+# Prediction and evaluation on test data
+predictions_test <- predict(ridge_reg, s = optimal_lambda, newx = x_test)
+eval_results(y_test, predictions_test, test)
+
+
+
+##---- 6. Regularization: Lasso ----
+
+lambdas <- 10^seq(2, -3, by = -.1)
+
+# Setting alpha = 1 implements lasso regression
+lasso_reg <- cv.glmnet(x, y_train, alpha = 1, lambda = lambdas, standardize = TRUE, nfolds = 5)
+
+# Best 
+lambda_best <- lasso_reg$lambda.min 
+lambda_best
+
+
+lasso_model <- glmnet(x, y_train, alpha = 1, lambda = lambda_best, standardize = TRUE)
+
+predictions_train <- predict(lasso_model, s = lambda_best, newx = x)
+eval_results(y_train, predictions_train, train)
+
+predictions_test <- predict(lasso_model, s = lambda_best, newx = x_test)
+eval_results(y_test, predictions_test, test)
+
+
+##---- 7. Regularization: ELastic Net ----
+# Set training control
+train_cont <- trainControl(method = "repeatedcv",
+                           number = 10,
+                           repeats = 5,
+                           search = "random",
+                           verboseIter = TRUE)
+
+# Train the model
+elastic_reg <- train(unemploy ~ .,
+                     data = train,
+                     method = "glmnet",
+                     preProcess = c("center", "scale"),
+                     tuneLength = 10,
+                     trControl = train_cont)
+
+# Make predictions on training set
+predictions_train <- predict(elastic_reg, x)
+eval_results(y_train, predictions_train, train) 
+
+# Make predictions on test set
+predictions_test <- predict(elastic_reg, x_test)
+eval_results(y_test, predictions_test, test)
+
+
+
+# Best tuning parameter
+elastic_reg$bestTune
+
+
+
+#---- Heatmap ----
+
+# 1. Change to all variables to numeric
+covid19.survey.data.numeric <- lapply(covid19.survey.data, as.numeric)
+covid19.survey.data.numeric.df<-as.data.frame(covid19.survey.data.numeric)
+
+# 2. Prepare data
+mydata <- covid19.survey.data.numeric.df[, -1] #remove first column
+head(mydata)
+
+# 3. Create correlation matrix using the R function cor() :
+cormat <- round(cor(mydata),2)
+head(cormat)
+
+# 4. Create the correlation heatmap with ggplot2
+melted_cormat <- reshape2::melt(cormat)
+head(melted_cormat)
+
+ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()
+
+# 5. Get the lower and upper triangles of the correlation matrix
+
+# Get lower triangle of the correlation matrix
+get_lower_tri<-function(cormat){
+  cormat[upper.tri(cormat)] <- NA
+  return(cormat)
+}
+# Get upper triangle of the correlation matrix
+get_upper_tri <- function(cormat){
+  cormat[lower.tri(cormat)]<- NA
+  return(cormat)
+}
+
+upper_tri <- get_upper_tri(cormat)
+upper_tri
+
+# 5. Finished correlation matrix heatmap
+# Melt the correlation matrix
+melted_cormat <- reshape2::melt(upper_tri, na.rm = TRUE)
+
+# Heatmap
+ggplot2::ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
+  geom_tile(color = "white")+
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1,1), space = "Lab", 
+                       name="Pearson\nCorrelation") +
+  theme_minimal()+ 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+                                   size = 12, hjust = 1))+
+  coord_fixed()
+
+# Reorder the correlation matrix
+reorder_cormat <- function(cormat){
+  # Use correlation between variables as distance
+  dd <- as.dist((1-cormat)/2)
+  hc <- hclust(dd)
+  cormat <-cormat[hc$order, hc$order]
+}
+
+# Reordered correlation data visualization :
+
+# Reorder the correlation matrix
+cormat <- reorder_cormat(cormat)
+upper_tri <- get_upper_tri(cormat)
+# Melt the correlation matrix
+melted_cormat <- melt(upper_tri, na.rm = TRUE)
+# Create a ggheatmap
+ggheatmap <- ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
+  geom_tile(color = "white")+
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1,1), space = "Lab", 
+                       name="Pearson\nCorrelation") +
+  theme_minimal()+ # minimal theme
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+                                   size = 12, hjust = 1))+
+  coord_fixed()
+# Print the heatmap
+print(ggheatmap)
+
+# Add correlation coefficients on the heatmap
+
+ggheatmap + 
+  geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.border = element_blank(),
+    panel.background = element_blank(),
+    axis.ticks = element_blank(),
+    legend.justification = c(1, 0),
+    legend.position = c(0.6, 0.7),
+    legend.direction = "horizontal")+
+  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
+                               title.position = "top", title.hjust = 0.5))
 
 
 

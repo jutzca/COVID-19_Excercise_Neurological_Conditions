@@ -23,7 +23,7 @@
 
 ## set working directory
 
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/shinyapp/")  #replace with your working directory
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/shinyapp/")  #replace with your working directory
 
 ## ---------------------------
 ## load up the packages we will need:  
