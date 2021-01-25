@@ -86,7 +86,7 @@ covid19.survey.data2 <- subset(covid19.survey.data, (!(is.na(Change_in_PA))))
 # Calculate the proportions per neurological condition
 covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
   group_by(Condition, Change_in_PA) %>%
-  summarise(n = n()) %>%
+  dplyr::summarise(n = n()) %>%
   mutate(freq = n / sum(n))%>%
   as.data.frame()
 
@@ -105,7 +105,7 @@ likert.graph.data[is.na(likert.graph.data)] <- 0
 # Create labels
 mylevels<-c("considerably less", "slightly less","about the same","slightly more","considerably more")
 
-## To handle the center category of “about the same,” this estimate is divided by two, and then include it twice. 
+## To handle the center category of ???about the same,??? this estimate is divided by two, and then include it twice. 
 ## That way,half of this category can be plotted below the center line and the other half above this line. The indvidual steps
 ## are described.
 
@@ -125,7 +125,7 @@ colnames(tab2)<-c("outcome",mylevels[1:floor(numlevels/2)],"midlow",
 
 
 ## To avoid too much blank space, find the closest 25% break below the minimum value and above the maximum value. Then,
-## pass these to ggplot’s limits option.
+## pass these to ggplot???s limits option.
 
 numlevels<-length(mylevels)+1
 point1<-2
@@ -208,7 +208,7 @@ dev.off()
 # Calculate the proportions per neurological condition
 covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
   group_by(Sex, Change_in_PA) %>%
-  summarise(n = n()) %>%
+  dplyr::summarise(n = n()) %>%
   mutate(freq = n / sum(n))%>%
   as.data.frame()
 
@@ -227,7 +227,7 @@ likert.graph.data[is.na(likert.graph.data)] <- 0
 # Create labels
 mylevels<-c("considerably less", "slightly less","about the same","slightly more","considerably more")
 
-## To handle the center category of “about the same,” this estimate is divided by two, and then include it twice. 
+## To handle the center category of ???about the same,??? this estimate is divided by two, and then include it twice. 
 ## That way,half of this category can be plotted below the center line and the other half above this line. The indvidual steps
 ## are described.
 
@@ -247,7 +247,7 @@ colnames(tab2)<-c("outcome",mylevels[1:floor(numlevels/2)],"midlow",
 
 
 ## To avoid too much blank space, find the closest 25% break below the minimum value and above the maximum value. Then,
-## pass these to ggplot’s limits option.
+## pass these to ggplot???s limits option.
 
 numlevels<-length(mylevels)+1
 point1<-2
@@ -331,7 +331,7 @@ dev.off()
 # Calculate the proportions per neurological condition
 covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
   group_by(Mobility_Aid, Change_in_PA) %>%
-  summarise(n = n()) %>%
+  dplyr::summarise(n = n()) %>%
   mutate(freq = n / sum(n))%>%
   as.data.frame()
 
@@ -350,7 +350,7 @@ likert.graph.data[is.na(likert.graph.data)] <- 0
 # Create labels
 mylevels<-c("considerably less", "slightly less","about the same","slightly more","considerably more")
 
-## To handle the center category of “about the same,” this estimate is divided by two, and then include it twice. 
+## To handle the center category of ???about the same,??? this estimate is divided by two, and then include it twice. 
 ## That way,half of this category can be plotted below the center line and the other half above this line. The indvidual steps
 ## are described.
 
@@ -370,7 +370,7 @@ colnames(tab2)<-c("outcome",mylevels[1:floor(numlevels/2)],"midlow",
 
 
 ## To avoid too much blank space, find the closest 25% break below the minimum value and above the maximum value. Then,
-## pass these to ggplot’s limits option.
+## pass these to ggplot???s limits option.
 
 numlevels<-length(mylevels)+1
 point1<-2

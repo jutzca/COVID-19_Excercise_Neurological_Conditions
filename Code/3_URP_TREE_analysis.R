@@ -76,12 +76,12 @@ glimpse(covid19.survey.data)
 Anxiety_score_without_na <-subset(covid19.survey.data, (!is.na(Anxiety_SCORE)))
 
 
-model1<-partykit::ctree(Anxiety_SCORE~Age+as.factor(Sex), data=Anxiety_score_without_na, na.action = na.pass)
+model1<-partykit::ctree(PASIDP_SCORE~Age+as.factor(Sex), data=Anxiety_score_without_na, na.action = na.pass)
 plot(model1)
 
 
-model2<-ctree(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Ethnicity)+as.factor(Condition)+Duration_Corrected+as.factor(Mobility_Aid)+PASIDP_SCORE, data=Anxiety_score_without_na, na.action = na.pass)
-plot(model2)
+model.pasidp<-ctree(PASIDP_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Ethnicity)+as.factor(Condition)+as.factor(Mobility_Aid), data=Anxiety_score_without_na, na.action = na.pass)
+plot(model.pasidp)
 
 
 #### -------------------------------------------------------------------------- CODE END ------------------------------------------------------------------------------------------------####

@@ -100,7 +100,7 @@ label(covid19.survey.data$HAQ_SDI_Mean) <- 'HAQ SDI'
 units(covid19.survey.data$Age) <- "years"
 
 # 6. Print table
-table1::table1(~ Sex+Age+Ethnicity+Condition+Situation+Mobility_Aid+GRSI+HAQ_SDI_Mean , data = covid19.survey.data)
+table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+GRSI | Situation , data = covid19.survey.data)
 
 
 # 7. Draw historgrams and save plots

@@ -32,6 +32,8 @@ library(dplyr)
 library(caret)
 library(ggplot2)
 library(repr)
+library(glmnet)
+
 
 
 
@@ -120,7 +122,7 @@ summary(train)
 
 ##---- 3. Linear Regression ----
 
-lr = lm(Anxiety_SCORE ~ Age +Sex+Exercise_SCORE, data = covid19.survey.data)
+lr = lm(Anxiety_SCORE ~ Age+Sex+PASIDP_SCORE+Mobility_Aid, data = covid19.survey.data)
 summary(lr)
 
 
@@ -148,9 +150,9 @@ eval_metrics(lr, test, predictions, target = 'Pain')
 
 ##---- 5. Regularization ----
 
-cols_reg = c('LTPA_SCORE', 'pop', 'psavert', 'uempmed', 'unemploy')
+cols_reg = c('LTPA_SCORE', "Anxiety_SCORE" )
 
-dummies <- dummyVars(unemploy ~ ., data = dat[,cols_reg])
+dummies <- dummyVars(Anxiety_SCORE ~ ., data = covid19.survey.data[,cols_reg])
 
 train_dummies = predict(dummies, newdata = train[,cols_reg])
 
@@ -163,10 +165,10 @@ print(dim(train_dummies)); print(dim(test_dummies))
 
 
 x = as.matrix(train_dummies)
-y_train = train$unemploy
+y_train = train$Anxiety_SCORE
 
 x_test = as.matrix(test_dummies)
-y_test = test$unemploy
+y_test = test$Anxiety_SCORE
 
 lambdas <- 10^seq(2, -3, by = -.1)
 ridge_reg = glmnet(x, y_train, nlambda = 25, alpha = 0, family = 'gaussian', lambda = lambdas)

@@ -29,26 +29,29 @@ setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions
 ## load up the packages we will need:  
 library(table1)
 library(ggplot2)
-library(likert)
-library(HH)
 library(dplyr)
 library(reshape2)
-library(RColorBrewer)
 library(ggthemes)
-library(stringr)
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(hrbrthemes)
+library(fmsb)
+library(colormap)
 
 ## ----------------------------
 ## Install packages needed:  (uncomment as required)
 
 #if(!require(table1)){install.packages("table1")}
 #if(!require(ggplot2)){install.packages("ggplot2")}
-#if(!require(likert)){install.packages("likert")}
-#if(!require(HH)){install.packages("HH")}
 #if(!require(dplyr)){install.packages("dplyr")}
 #if(!require(reshape2)){install.packages("reshape2")}
-#if(!require(RColorBrewer)){install.packages("RColorBrewer")}
 #if(!require(ggthemes)){install.packages("ggthemes")}
-#if(!require(stringr)){install.packages("stringr")}
+#if(!require(tidyverse)){install.packages("tidyverse")}
+#if(!require(patchwork)){install.packages("patchwork")}
+#if(!require(hrbrthemes)){install.packages("hrbrthemes")}
+#if(!require(fmsb)){install.packages("fmsb")}
+#if(!require(colormap)){install.packages("colormap")}
 
 
 #### ---------------------------
@@ -80,14 +83,14 @@ levels(covid19.survey.data$Sex) <- c("Female", "Male", "Prefer not to disclose")
 
 
 #Select columns from data using the 'select' function from the dplyr package
-covid19.survey.data_scores <- covid19.survey.data %>% dplyr::select(contains("Condition")| contains("Sex")| contains("Pain") | contains("HAQ_SDI_Mean")|contains("SCORE"))
+covid19.survey.data_scores <- covid19.survey.data %>% dplyr::select(contains("Condition")| contains("Sex")|contains("SCORE"))
 
 #### ---- Radar plot stratified by neurological condition ----- ####
 
 # Calculate mean of each column stratified by neurological condition
 covid19.survey.data_neurol_cond <- covid19.survey.data_scores %>%
   group_by(Condition) %>%
-  summarise(across(Pain:Depression_SCORE, mean)) %>%
+  dplyr::summarise(across(Walking_wheeling_SCORE:Depression_SCORE, mean)) %>%
   as.data.frame()
 
 # Subset data
