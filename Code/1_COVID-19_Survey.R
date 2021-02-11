@@ -18,42 +18,43 @@
 ##
 ## Notes: This analysis is for the publication Nightingale et al, 2021 published in XX. [add link here]
 ##   
-#### ---------------------------
-
-## set working directory
-
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
-
 ## ---------------------------
+##
 ## load up the packages we will need:  
+##
 library(table1)
 library(ggplot2)
 library(likert)
 library(HH)
 library(dplyr)
-
+##
 ## ----------------------------
+##
 ## Install packages needed:  (uncomment as required)
-
+##
 #if(!require(table1)){install.packages("table1")}
 #if(!require(ggplot2)){install.packages("ggplot2")}
 #if(!require(likert)){install.packages("likert")}
 #if(!require(HH)){install.packages("HH")}
 #if(!require(dplyr)){install.packages("dplyr")}
-
-
+##
 #### ---------------------------
-#Clear working space
-
-rm(list = ls())
-
+##
+## R Studio Clean-Up:
+cat("\014") # clear console
+rm(list=ls()) # clear workspace
+gc() # garbage collector
+##
 #### ---------------------------
-#Set output directorypaths
-
+##
+## Set working directory and output directorypaths
+##
+setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+##
+##
 outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
 outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
-
-
+##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
 #load original data
@@ -61,9 +62,9 @@ covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVI
 names(covid19.survey.data)
 
 
-#----- Create Summary Table of Included Cohort -----
+#---------- Create Summary Table of Included Cohort ---------- 
 
-### Formatting of table: Customize levels, labels, and units of listed variables
+# Formatting of table: Customize levels, labels, and units of listed variables
 
 # 1. Change class of variables
 covid19.survey.data$GRSI <- as.factor(covid19.survey.data$GRSI )
@@ -83,7 +84,6 @@ levels(covid19.survey.data$Condition) <- c("Cerebral Palsy", "Fibromyalgia, Chro
                                            "Multiple Sclerosis", "Parkinson's disease", "Spinal Cord Injury", "Stroke, ataxia's, other (spina bifida, dystonia)")
 levels(covid19.survey.data$Mobility_Aid) <- c("Manual wheelchair","Power wheelchair", "Mobility scooter", "Zimmer frame","Walking sticks", "Crutches",
                                                                                         "None", "Other")
-
 # 4. Relable variables
 label(covid19.survey.data$Sex) <- "Sex, n (%)"
 label(covid19.survey.data$Age) <- "Age"
@@ -94,25 +94,23 @@ label(covid19.survey.data$Ethnicity) <- 'Ethnicity, n (%)'
 label(covid19.survey.data$Situation) <- 'Situation, n (%)'
 label(covid19.survey.data$HAQ_SDI_Mean) <- 'HAQ SDI'
 
-
-
 # 5. Assign units to Age at Injury and Year of Injury
 units(covid19.survey.data$Age) <- "years"
 
 # 6. Print table
 table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+GRSI | Situation , data = covid19.survey.data)
 
-
 # 7. Draw historgrams and save plots
 
-#---- By HAQ_SDI_Mean by sex ----
+#----- HAQ_SDI_Mean by sex ----
+
+# Create plot
 histogram_HAQ_SDI_Mean.by_sex<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Sex)) +                      
   geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
   theme_bw()
 histogram_HAQ_SDI_Mean.by_sex
 
-
-##Save plot
+# Save plot
 ggsave(
   "histogram_HAQ_SDI_Mean.by_sex.pdf",
   plot = histogram_HAQ_SDI_Mean.by_sex,
@@ -129,13 +127,13 @@ dev.off()
 
 #---- By HAQ_SDI_Mean by Mobility Aid ----
 
+# Create plot
 histogram_HAQ_SDI_Mean.by_mobility_aid<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Mobility_Aid)) +                      
   geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
   theme_bw()
 histogram_HAQ_SDI_Mean.by_mobility_aid
 
-
-##Save plot
+# Save plot
 ggsave(
   "histogram_HAQ_SDI_Mean.by_mobility_aid.pdf",
   plot = histogram_HAQ_SDI_Mean.by_mobility_aid,
@@ -153,13 +151,13 @@ dev.off()
 
 #---- By HAQ_SDI_Mean by neurological conditions ----
 
+# Create plot
 histogram_HAQ_SDI_Mean.by_neurol_cond<-ggplot(covid19.survey.data, aes(x = HAQ_SDI_Mean, fill = Condition)) +                      
   geom_histogram(position = "identity", alpha = 0.5, bins = 25)+
   theme_bw()
 histogram_HAQ_SDI_Mean.by_neurol_cond
 
-
-##Save plot
+# Save plot
 ggsave(
   "histogram_HAQ_SDI_Mean.by_neurol_cond.pdf",
   plot = histogram_HAQ_SDI_Mean.by_neurol_cond,
