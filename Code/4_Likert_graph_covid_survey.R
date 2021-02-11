@@ -19,14 +19,10 @@
 ## Notes: This analysis is for the publication Nightingale et al, 2021 published in XX. [add link here]
 ##        http://rnotr.com/likert/ggplot/barometer/likert-plots/
 ##   
-#### ---------------------------
-
-## set working directory
-
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")  #replace with your working directory
-
 ## ---------------------------
+##
 ## load up the packages we will need:  
+##
 library(table1)
 library(ggplot2)
 library(likert)
@@ -36,10 +32,12 @@ library(reshape2)
 library(RColorBrewer)
 library(ggthemes)
 library(stringr)
-
+library(Hmisc)
+##
 ## ----------------------------
+##
 ## Install packages needed:  (uncomment as required)
-
+##
 #if(!require(table1)){install.packages("table1")}
 #if(!require(ggplot2)){install.packages("ggplot2")}
 #if(!require(likert)){install.packages("likert")}
@@ -49,28 +47,33 @@ library(stringr)
 #if(!require(RColorBrewer)){install.packages("RColorBrewer")}
 #if(!require(ggthemes)){install.packages("ggthemes")}
 #if(!require(stringr)){install.packages("stringr")}
-
-
+#if(!require(Hmisc)){install.packages("Hmisc")}
+##
 #### ---------------------------
-#Clear working space
-
-rm(list = ls())
-
+##
+## R Studio Clean-Up:
+cat("\014") # clear console
+rm(list=ls()) # clear workspace
+gc() # garbage collector
+##
 #### ---------------------------
-#Set output directory paths
-
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'    #replace with your output directory paths for Figures
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'      #replace with your output directory paths for Tables
-
-
+##
+## Set working directory and output directorypaths
+##
+setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+##
+##
+outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
-# load original data
+# Load original data
 covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 names(covid19.survey.data)
 
 # Relabel variable levels
-levels(covid19.survey.data$Condition) <- c("Cerebral Palsy", "Fibromyalgia, Chronic fatigue syndromee, CRPS" , "Muscular dystrophy, neuromuscular diseases", 
+levels(covid19.survey.data$Condition) <- c("Cerebral Palsy", "Fibromyalgia, Chronic fatigue syndrome, CRPS" , "Muscular dystrophy, neuromuscular diseases", 
                                            "Multiple Sclerosis", "Parkinson's disease", "Spinal Cord Injury", "Stroke, ataxia's, other (spina bifida, dystonia)")
 
 levels(covid19.survey.data$Mobility_Aid) <- c("Manual wheelchair","Power wheelchair", "Mobility scooter", "Zimmer frame","Walking sticks", "Crutches",
@@ -87,7 +90,7 @@ covid19.survey.data2 <- subset(covid19.survey.data, (!(is.na(Change_in_PA))))
 covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
   group_by(Condition, Change_in_PA) %>%
   dplyr::summarise(n = n()) %>%
-  mutate(freq = n / sum(n))%>%
+  dplyr::mutate(freq = n / sum(n))%>%
   as.data.frame()
 
 # Reformat dataframe from long to wide
@@ -105,7 +108,7 @@ likert.graph.data[is.na(likert.graph.data)] <- 0
 # Create labels
 mylevels<-c("considerably less", "slightly less","about the same","slightly more","considerably more")
 
-## To handle the center category of ???about the same,??? this estimate is divided by two, and then include it twice. 
+## To handle the center category of 'about the same' this estimate is divided by two, and then include it twice. 
 ## That way,half of this category can be plotted below the center line and the other half above this line. The indvidual steps
 ## are described.
 
@@ -447,6 +450,8 @@ ggsave(
 )
 
 dev.off()
+
+#### -------------------------------------------------------------------------- CODE END ------------------------------------------------------------------------------------------------####
 
 
 

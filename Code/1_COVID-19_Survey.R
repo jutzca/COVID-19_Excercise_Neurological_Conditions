@@ -27,6 +27,7 @@ library(ggplot2)
 library(likert)
 library(HH)
 library(dplyr)
+library(Hmisc)
 ##
 ## ----------------------------
 ##
@@ -37,6 +38,7 @@ library(dplyr)
 #if(!require(likert)){install.packages("likert")}
 #if(!require(HH)){install.packages("HH")}
 #if(!require(dplyr)){install.packages("dplyr")}
+#if(!require(Hmisc)){install.packages("Hmisc")}
 ##
 #### ---------------------------
 ##
@@ -57,7 +59,7 @@ outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Co
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
-#load original data
+# Load original data
 covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 names(covid19.survey.data)
 
@@ -80,25 +82,25 @@ levels(covid19.survey.data$Sex) <- c("Female", "Male", "Prefer not to disclose")
 levels(covid19.survey.data$Ethnicity) <- c("Asian/Asian British", "Black/African/Caribbean/Black British", "Caucasian/White", "Mixed/multiple ethnic groups", 'Other')
 levels(covid19.survey.data$Situation) <- c("Self-imposed isolation/shielded (considered at-risk)", "Isolation due to government legislation", 
                                                                                    "Practising social distancing", "None of the above", "Other")
-levels(covid19.survey.data$Condition) <- c("Cerebral Palsy", "Fibromyalgia, Chronic fatigue syndromee, CRPS" , "Muscular dystrophy, neuromuscular diseases", 
+levels(covid19.survey.data$Condition) <- c("Cerebral Palsy", "Fibromyalgia, Chronic fatigue syndrome, CRPS" , "Muscular dystrophy, neuromuscular diseases", 
                                            "Multiple Sclerosis", "Parkinson's disease", "Spinal Cord Injury", "Stroke, ataxia's, other (spina bifida, dystonia)")
 levels(covid19.survey.data$Mobility_Aid) <- c("Manual wheelchair","Power wheelchair", "Mobility scooter", "Zimmer frame","Walking sticks", "Crutches",
                                                                                         "None", "Other")
 # 4. Relable variables
-label(covid19.survey.data$Sex) <- "Sex, n (%)"
-label(covid19.survey.data$Age) <- "Age"
-label(covid19.survey.data$Mobility_Aid) <- "Mobility Aid, n (%)"
-label(covid19.survey.data$GRSI) <- "Government Response Stringency Index, n (%)"
-label(covid19.survey.data$Condition) <- 'Condition, n (%)'
-label(covid19.survey.data$Ethnicity) <- 'Ethnicity, n (%)'
-label(covid19.survey.data$Situation) <- 'Situation, n (%)'
-label(covid19.survey.data$HAQ_SDI_Mean) <- 'HAQ SDI'
+Hmisc::label(covid19.survey.data$Sex) <- "Sex, n (%)"
+Hmisc::label(covid19.survey.data$Age) <- "Age"
+Hmisc::label(covid19.survey.data$Mobility_Aid) <- "Mobility Aid, n (%)"
+Hmisc::label(covid19.survey.data$GRSI) <- "Government Response Stringency Index, n (%)"
+Hmisc::label(covid19.survey.data$Condition) <- 'Condition, n (%)'
+Hmisc::label(covid19.survey.data$Ethnicity) <- 'Ethnicity, n (%)'
+Hmisc::label(covid19.survey.data$Situation) <- 'Situation, n (%)'
+Hmisc::label(covid19.survey.data$HAQ_SDI_Mean) <- 'HAQ SDI'
 
 # 5. Assign units to Age at Injury and Year of Injury
 units(covid19.survey.data$Age) <- "years"
 
 # 6. Print table
-table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+GRSI | Situation , data = covid19.survey.data)
+table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid++Situation+GRSI, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
 # 7. Draw historgrams and save plots
 
@@ -175,4 +177,3 @@ dev.off()
 
 
 #### -------------------------------------------------------------------------- CODE END ------------------------------------------------------------------------------------------------####
-

@@ -17,14 +17,10 @@
 ##
 ## Notes: This analysis is for the publication Nightingale et al, 2021 published in XX. [add link here]
 ##   
-#### ---------------------------
-
-## set working directory
-
-setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
-
 ## ---------------------------
+##
 ## load up the packages we will need:  
+##
 library(partykit)
 library(plyr)
 library(readr)
@@ -34,13 +30,11 @@ library(ggplot2)
 library(repr)
 library(glmnet)
 library(reshape2)
-
-
-
-
+##
 ## ----------------------------
+##
 ## Install packages needed:  (uncomment as required)
-
+##
 ##if(!require(partykit)){install.packages("partykit")}
 ##if(!require(plyr)){install.packages("plyr")}
 ##if(!require(readr)){install.packages("readr")}
@@ -48,34 +42,38 @@ library(reshape2)
 ##if(!require(caret)){install.packages("caret")}
 ##if(!require(ggplot2)){install.packages("ggplot2")}
 ##if(!require(repr)){install.packages("repr")}
-
-
+##
 #### ---------------------------
-#Clear working space
-
-rm(list = ls())
-
+##
+## R Studio Clean-Up:
+cat("\014") # clear console
+rm(list=ls()) # clear workspace
+gc() # garbage collector
+##
 #### ---------------------------
-#Set output directorypaths
-
-outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
-
-
+##
+## Set working directory and output directorypaths
+##
+setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+##
+##
+outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
-#load original data
+# Load original data
 covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 
-#Display all the variable names
+# Display all the variable names
 names(covid19.survey.data)
 
-#Take a glimpse at the data and its structure
-glimpse(covid19.survey.data)
+# Take a glimpse at the data and its structure
+dplyr::glimpse(covid19.survey.data)
 
 ##---- 1. Data Partitioning ----
-## We will build our model on the training set and evaluate its performance on the test set. This is called the holdout-validation approach for 
-## evaluating model performance.
+# We will build our model on the training set and evaluate its performance on the test set. This is called the holdout-validation approach for 
+# evaluating model performance.
 
 # The is line sets the random seed for reproducibility of results. 
 set.seed(100) 
