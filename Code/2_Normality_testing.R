@@ -72,11 +72,11 @@ col_names <- colnames(covid19.survey.data.subset)
 
 # 1. Density plot: the density plot provides a visual judgment about whether the distribution is bell shaped. Loop through column names and generata density plots.
 for (i in col_names){
+  # Create plot for all variables i
   myplot1 <- ggpubr::ggdensity(covid19.survey.data.subset, i, 
                             main = paste("Density plot of", i),
                             xlab =paste("Density plot of", i))
- 
- 
+  # Save plot 
   ggsave(myplot1,filename=paste('Density_plots_',i,".pdf",sep=""),path='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/Density_plots')
   
 }
@@ -86,13 +86,14 @@ for (i in col_names){
 
 # Loop through column names and generata density plots
 for (i in col_names){
+  
+  # Create plot for all variables i
   myplot1 <- ggpubr::ggqqplot(covid19.survey.data.subset, i, 
                                main = paste("QQ plot of", i),
                                xlab =paste("QQ plot of", i))
   
-  
+  # Save plot
   ggsave(myplot1,filename=paste('QQ_plots',i,".pdf",sep=""),path='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/QQ_plots')
-  
 }
 
 
@@ -106,7 +107,7 @@ sw_test_results <- covid19.survey.data.subset %>% dplyr::select_if(is.numeric)%>
   ungroup() %>% 
   dplyr::select(-method)%>%
   as.data.frame()%>%
-  mutate_if(is.numeric, round, digits = 3)
+  dplyr::mutate_if(is.numeric, round, digits = 3)
 
 # %>%mutate(variable_name = as.character(variable_name),
     # variable_name= sub("_", " ", variable_name, ignore.case = FALSE))
