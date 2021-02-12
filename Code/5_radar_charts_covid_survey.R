@@ -23,12 +23,13 @@
 ##
 ## load up the packages we will need:  
 ##
+library(tidyverse)
 library(table1)
 library(ggplot2)
 library(dplyr)
 library(reshape2)
 library(ggthemes)
-library(tidyverse)
+library(plyr)
 library(viridis)
 library(patchwork)
 library(hrbrthemes)
@@ -61,11 +62,11 @@ gc() # garbage collector
 ##
 ## Set working directory and output directorypaths
 ##
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 ##
 ##
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
@@ -86,14 +87,14 @@ levels(covid19.survey.data$Sex) <- c("Female", "Male", "Prefer not to disclose")
 # Select columns from data using the 'select' function from the dplyr package
 #covid19.survey.data_scores <- covid19.survey.data %>% dplyr::select(contains("Condition")| contains("Sex")|contains("SCORE"))
 
-covid19.survey.data_scores.ltpa <- covid19.survey.data[,c(6,12,13,15,17,19,21)]
+covid19.survey.data_scores.ltpa <- covid19.survey.data[,c(6,11,13,15,17,19,21)]
 
-#---------- Radar plot stratified by neurological condition ---------- 
+#---------- Radar plot for LTPDA stratified by neurological condition ---------- 
 
 # Calculate mean of each column stratified by neurological condition
 covid19.survey.data_neurol_cond <- covid19.survey.data_scores.ltpa %>%
   dplyr::group_by(Condition) %>%
-  dplyr::summarise(across(Walking_wheeling_Hours_Per_Day:Exercise_SCORE, mean)) %>%
+  dplyr::summarise(across(Sedentary_Hrs_Per_Day:Exercise_SCORE, mean)) %>%
   as.data.frame()
 
 # Subset data
@@ -115,6 +116,7 @@ colors_in=colormap(colormap=colormaps$viridis, nshades=7, alpha=0.3)
 mytitle.neurol.cond <- c("Cerebral Palsy", "Fibromyalgia, Chronic fatigue syndromee, CRPS", "Muscular dystrophy, neuromuscular diseases", "Multiple Sclerosis", 
              "Parkinson's disease", "Spinal Cord Injury", 'Stroke, ataxias, other (spina bifida, dystonia)')
 
+
 # Split the screen in 7 parts
 par(mar=rep(0.8,4))
 par(mfrow=c(3,3))
@@ -132,26 +134,26 @@ for(i in 1:7){
               cglcol="grey", cglty=1, axislabcol="grey",caxislabels=seq(0,4,1), cglwd=0.6,
               
               # custom labels
-              vlcex=0.8,
+              vlcex=0.8, 
+              vlabels = c("Sedentary Hours/ Day","Walking/Wheeling Score","Light Sport Score","Moderate Sport Score","Strenous Sport Score", "Exercise Score"), 
               
               # add title
               title=mytitle.neurol.cond[i]
   )
 }
 
+#---------- Radar plot for LTPDA stratified by sex ---------- 
 
-
-
-#### ---- Radar plot stratified by sex ----- ####
+covid19.survey.data_scores.ltpa <- covid19.survey.data[,c(3,11,13,15,17,19,21)]
 
 # Calculate mean of each column stratified by sex
-covid19.survey.data_sex <- covid19.survey.data_scores %>%
+covid19.survey.data_sex <- covid19.survey.data_scores.ltpa %>%
   group_by(Sex) %>%
-  summarise(across(Pain:Depression_SCORE, mean)) %>%
+  dplyr::summarise(across(Sedentary_Hrs_Per_Day:Exercise_SCORE, mean)) %>%
   as.data.frame()
 
 # Subset data
-covid19.survey.data_sex_subset <- covid19.survey.data_sex[,-c(1, 16:24)]
+covid19.survey.data_sex_subset<-covid19.survey.data_sex[,-c(1)]
 
 # Replace NA's with 0
 covid19.survey.data_sex_subset[is.na(covid19.survey.data_sex_subset)] <- 0
@@ -159,7 +161,7 @@ covid19.survey.data_sex_subset[is.na(covid19.survey.data_sex_subset)] <- 0
 
 ## Radar plot
 # To use the fmsb package, two lines have to be added to the dataframe: the max and min of each topic to show on the plot!
-covid19.survey.data_sex_subset_for_radarplot <-rbind(rep(10,10) , rep(0,10) , covid19.survey.data_sex_subset)
+covid19.survey.data_sex_subset_for_radarplot <-rbind(rep(4,10) , rep(0,10) , covid19.survey.data_sex_subset)
 
 # Prepare color: 3 shades one for each level of the variable sex (i.e., female, male, prefer not to disclose)
 colors_border=colormap(colormap=colormaps$viridis, nshades=3, alpha=1)
@@ -182,16 +184,71 @@ for(i in 1:3){
              pcol=colors_border[i] , pfcol=colors_in[i] , plwd=2, plty=1 , 
              
              # custom the grid
-             cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(0,10,2), cglwd=0.6,
+             cglcol="grey", cglty=1, axislabcol="grey",caxislabels=seq(0,5,1), cglwd=0.6,
              
              # custom labels
-             vlcex=0.8,
+             vlcex=0.8, 
+             vlabels = c("Sedentary Hours/ Day","Walking/Wheeling Score","Light Sport Score","Moderate Sport Score","Strenous Sport Score", "Exercise Score"), 
              
              # add title
              title=mytitle.sex[i]
   )
 }
 
+
+#---------- Radar plot for LTPDA stratified by mobility aid ---------- 
+
+covid19.survey.data_scores.ltpa <- covid19.survey.data[,c(8,11,13,15,17,19,21)]
+
+# Calculate mean of each column stratified by mobility aid
+covid19.survey.data_mobility_aid <- covid19.survey.data_scores.ltpa %>%
+  group_by(Mobility_Aid) %>%
+  dplyr::summarise(across(Sedentary_Hrs_Per_Day:Exercise_SCORE, mean)) %>%
+  as.data.frame()
+
+# Subset data
+covid19.survey.data_mobility_aid_subset<-covid19.survey.data_mobility_aid[,-c(1)]
+
+# Replace NA's with 0
+covid19.survey.data_mobility_aid_subset[is.na(covid19.survey.data_mobility_aid_subset)] <- 0
+
+
+## Radar plot
+# To use the fmsb package, two lines have to be added to the dataframe: the max and min of each topic to show on the plot!
+covid19.survey.data_mobility_aid_subset_for_radarplot <-rbind(rep(4,10) , rep(0,10) , covid19.survey.data_mobility_aid_subset)
+
+# Prepare color: 3 shades one for each level of the variable mobility aid (i.e., female, male, prefer not to disclose)
+colors_border=colormap(colormap=colormaps$viridis, nshades=8, alpha=1)
+colors_in=colormap(colormap=colormaps$viridis, nshades=8, alpha=0.3)
+
+# Prepare title for plots
+mytitle.mobility_aid <- c("Manual wheelchair","Powered wheelchair", "Mobility scooter", "Zimmer frame","Walking sticks", "Crutches",
+                                                                                                               "None", "Other")
+
+# Split the screen in 8 parts to place the plots
+par(mar=rep(0.8,4))
+par(mfrow=c(3,3))
+
+# Loop for each plot
+for(i in 1:8){
+  
+  # Custom the radarChart
+  radarchart(covid19.survey.data_mobility_aid_subset_for_radarplot[c(1,2,i+2),], axistype=1, 
+             
+             # custom polygon
+             pcol=colors_border[i] , pfcol=colors_in[i] , plwd=2, plty=1 , 
+             
+             # custom the grid
+             cglcol="grey", cglty=1, axislabcol="grey",caxislabels=seq(0,5,1), cglwd=0.6,
+             
+             # custom labels
+             vlcex=0.8, 
+             vlabels = c("Sedentary Hours/ Day","Walking/Wheeling Score","Light Sport Score","Moderate Sport Score","Strenous Sport Score", "Exercise Score"), 
+             
+             # add title
+             title=mytitle.mobility_aid[i]
+  )
+}
 
 
 
