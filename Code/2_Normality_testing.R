@@ -24,6 +24,8 @@
 library("ggplot2")
 library("dplyr")
 library("ggpubr")
+library("tidyr")
+library("broom")
 ##
 ## ----------------------------
 ##
@@ -32,6 +34,8 @@ library("ggpubr")
 #if(!require(ggplot2)){install.packages("ggplot2")}
 #if(!require(dplyr)){install.packages("dplyr")}
 #if(!require(ggpubr)){install.packages("ggpubr")}
+#if(!require(tidyr)){install.packages("tidyr")}
+#if(!require(broom)){install.packages("broom")}
 ##
 #### ---------------------------
 ##
@@ -64,8 +68,9 @@ dplyr::sample_n(covid19.survey.data, 10)
 
 #---------- Visual methods  ---------- 
 
-# Subset data to variables of interest
-covid19.survey.data.subset <- covid19.survey.data%>%dplyr::select_if(is.numeric)
+# Subset data to numeric variables
+covid19.survey.data.subset <- covid19.survey.data%>%
+  dplyr::select_if(is.numeric)
 
 # Extract column names
 col_names <- colnames(covid19.survey.data.subset)
@@ -101,10 +106,10 @@ for (i in col_names){
 
 # Shapiro-Wilk test of normality for one variable (univariate):
 sw_test_results <- covid19.survey.data.subset %>% dplyr::select_if(is.numeric)%>%
-  gather(key = "variable_name", value = "value", HAQ_SDI_Mean:GRSI) %>% 
-  group_by(variable_name)  %>% 
-  do(tidy(shapiro.test(.$value))) %>% 
-  ungroup() %>% 
+  tidyr::gather(key = "variable_name", value = "value", HAQ_SDI_Mean:GRSI) %>% 
+  dplyr::group_by(variable_name)  %>% 
+  dplyr::do(broom::tidy(shapiro.test(.$value))) %>% 
+  dplyr::ungroup() %>% 
   dplyr::select(-method)%>%
   as.data.frame()%>%
   dplyr::mutate_if(is.numeric, round, digits = 3)
