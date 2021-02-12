@@ -100,7 +100,12 @@ Hmisc::label(covid19.survey.data$HAQ_SDI_Mean) <- 'HAQ SDI'
 units(covid19.survey.data$Age) <- "years"
 
 # 6. Print table
-table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid++Situation+GRSI, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+Situation+GRSI, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
+
+table1::table1(~ Depression_SCORE+Anxiety_SCORE+Global_Fatigue+Fear_of_COVID_19_SCORE+UCLA_Loneliness_SCORE+HAQ_SDI_Mean+Pain+Sedentary_Hrs_Per_Day+Exercise_SCORE+LTPA_SCORE |Condition, 
+               data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
 
 # 7. Draw historgrams and save plots
 
