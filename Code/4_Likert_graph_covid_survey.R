@@ -84,17 +84,21 @@ levels(covid19.survey.data$Sex) <- c("Female", "Male", "Prefer not to disclose")
 # Subset data to remove NAs from Change_in_PA variable
 covid19.survey.data2 <- subset(covid19.survey.data, (!(is.na(Change_in_PA))))
 
-#### ---- Plot for neurological condition ----- ####
+#---------- Plot for neurological condition ---------- 
 
 # Calculate the proportions per neurological condition
-covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
+covid19.survey.data.change.in.PA.neurol.cond <- covid19.survey.data2 %>%
   group_by(Condition, Change_in_PA) %>%
   dplyr::summarise(n = n()) %>%
   dplyr::mutate(freq = n / sum(n))%>%
   as.data.frame()
+covid19.survey.data.change.in.PA.neurol.cond
+
+# Save table
+write.csv(covid19.survey.data.change.in.PA.neurol.cond,"/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/Likert_scale_change_in_PA_neurol.condition.csv", row.names = F)
 
 # Reformat dataframe from long to wide
-covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA, timevar = "Change_in_PA", idvar = "Condition", direction = "wide")
+covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA.neurol.cond, timevar = "Change_in_PA", idvar = "Condition", direction = "wide")
 
 # Subset data
 covid19.survey.data.change.in.PA.wide_subset <-covid19.survey.data.change.in.PA.wide[, -c(2,4,6,8,10)]
@@ -191,7 +195,7 @@ likert.plot_neurol_condition <- ggplot() + geom_bar(data=highs, aes(x = outcome,
   scale_y_continuous(breaks=seq(mymin,mymax,25), limits=c(mymin,mymax)) # customize the limits of the y-axis
 likert.plot_neurol_condition
 
-## Save plot
+# Save plot
 ggsave(
   "likert.plot_neurol_condition.pdf",
   plot = likert.plot_neurol_condition,
@@ -206,17 +210,22 @@ ggsave(
 
 dev.off()
 
-#### ---- Plot for sex: female, male, prefer not to disclose ----- ####
+#---------- Plot for sex: female, male, prefer not to disclose ---------- 
 
-# Calculate the proportions per neurological condition
-covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
+# Calculate the proportions per sex
+covid19.survey.data.change.in.PA.sex <- covid19.survey.data2 %>%
   group_by(Sex, Change_in_PA) %>%
   dplyr::summarise(n = n()) %>%
   mutate(freq = n / sum(n))%>%
   as.data.frame()
+covid19.survey.data.change.in.PA.sex
+
+# Save table
+write.csv(covid19.survey.data.change.in.PA.sex,"/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/Likert_scale_change_in_PA_sex.csv", row.names = F)
+
 
 # Reformat dataframe from long to wide
-covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA, timevar = "Change_in_PA", idvar = "Sex", direction = "wide")
+covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA.sex, timevar = "Change_in_PA", idvar = "Sex", direction = "wide")
 
 # Subset data
 covid19.survey.data.change.in.PA.wide_subset <-covid19.survey.data.change.in.PA.wide[, -c(2,4,6,8,10)]
@@ -313,7 +322,7 @@ likert.plot_sex <- ggplot() + geom_bar(data=highs, aes(x = outcome, y=value, fil
   scale_y_continuous(breaks=seq(mymin,mymax,25), limits=c(mymin,mymax)) # customize the limits of the y-axis
 likert.plot_sex
 
-## Save plot
+# Save plot
 ggsave(
   "likert.plot_sex.pdf",
   plot = likert.plot_sex,
@@ -329,17 +338,21 @@ ggsave(
 dev.off()
 
 
-#### ---- Plot for mobility aid ----- ####
+#---------- Plot for mobility aid ---------- 
 
-# Calculate the proportions per neurological condition
-covid19.survey.data.change.in.PA <- covid19.survey.data2 %>%
+# Calculate the proportions per mobility aid
+covid19.survey.data.change.in.PA.mob.aid <- covid19.survey.data2 %>%
   group_by(Mobility_Aid, Change_in_PA) %>%
   dplyr::summarise(n = n()) %>%
   mutate(freq = n / sum(n))%>%
   as.data.frame()
+covid19.survey.data.change.in.PA.mob.aid
+
+# Save Table
+write.csv(covid19.survey.data.change.in.PA.mob.aid,"/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/Likert_scale_change_in_PA_mob.aid.csv", row.names = F)
 
 # Reformat dataframe from long to wide
-covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA, timevar = "Change_in_PA", idvar = "Mobility_Aid", direction = "wide")
+covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA.mob.aid, timevar = "Change_in_PA", idvar = "Mobility_Aid", direction = "wide")
 
 # Subset data
 covid19.survey.data.change.in.PA.wide_subset <-covid19.survey.data.change.in.PA.wide[, -c(2,4,6,8,10)]
@@ -436,7 +449,7 @@ likert.plot_mobility_aid <- ggplot() + geom_bar(data=highs, aes(x = outcome, y=v
   scale_y_continuous(breaks=seq(mymin,mymax,25), limits=c(mymin,mymax)) # customize the limits of the y-axis
 likert.plot_mobility_aid
 
-## Save plot
+# Save plot
 ggsave(
   "likert.plot_mobility_aid.pdf",
   plot = likert.plot_mobility_aid,

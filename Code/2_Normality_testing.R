@@ -117,3 +117,6 @@ write.csv(sw_test_results, "/Users/jutzca/Documents/Github/COVID-19_Excercise_Ne
 
 # If p-value > 0.05 implying that the distribution of the data are not significantly different from normal distribution. In other words, we can assume the normality.
 # If p-value > 0.05 implying that the distribution of the data are significantly different from normal distribution. In other words, we can NOT assume the normality.
+
+#### -------------------------------------------------------------------------- CODE END ------------------------------------------------------------------------------------------------####
+
