@@ -117,7 +117,7 @@ summary(train)
 
 ##---- 3. Linear Regression ----
 
-lr = lm(Anxiety_SCORE ~ Age+Sex+PASIDP_SCORE+Mobility_Aid, data = covid19.survey.data)
+lr = lm(HAQ_SDI_Mean ~ Age+Sex+PASIDP_SCORE+Mobility_Aid+Condition+Sedentary_Hrs_Per_Day, data = covid19.survey.data)
 summary(lr)
 
 
@@ -135,11 +135,11 @@ eval_metrics = function(model, df, predictions, target){
 
 # Step 4.2 - predicting and evaluating the model on train data
 predictions = predict(lr, newdata = train)
-eval_metrics(lr, train, predictions, target = 'Pain')
+eval_metrics(lr, train, predictions, target = 'HAQ_SDI_Mean')
 
 # Step 4.3 - predicting and evaluating the model on test data --> first numer is R2 and second RMSE
 predictions = predict(lr, newdata = test)
-eval_metrics(lr, test, predictions, target = 'Pain')
+eval_metrics(lr, test, predictions, target = 'HAQ_SDI_Mean')
 
 
 
