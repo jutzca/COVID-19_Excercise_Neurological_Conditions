@@ -54,11 +54,11 @@ gc() # garbage collector
 ##
 ## Set working directory and output directorypaths
 ##
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 ##
 ##
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
@@ -94,13 +94,9 @@ dim(test)
 ##---- 2. Scaling the Numeric Features (variables) ----
 
 # Create list containing the names of independent numeric variables. 
-cols = c('Age', 'Duration_Corrected', 'Sedentary_Hrs_Per_Day', 'Walking_wheeling_Hours_Per_Day', 'Walking_wheeling_SCORE',
-         "Light_sport_Hours_Per_Day", "Light_sport_SCORE",  "Moderate_sport_Hours_Per_Day", "Moderate_sport_SCORE", "Strenous_sport_Hours_Per_Day",
-         "Strenous_sport_SCORE", "Exercise_Hours_Per_Day", "Exercise_SCORE", "LTPA_SCORE", "Light_housework_Hours_Per_Day","Light_housework_SCORE", 
-         "Heavy_housework_Hours_Per_Day", "Heavy.housework_SCORE", "Home_repairs_Hours_Per_Day", "Home_repairs_SCORE", "Yard_work_Hours_Per_Day",
-         "Yard_work_SCORE", "Gardening_Hours_Per_Day", "Gardening_SCORE", "Caring_Hours_Per_Day", "Caring_SCORE", 
-         "Work_related_activity_Hours_Per_Day", "Leaving_the_house_to_work_Hours_Per_Day", "Fear_of_COVID_19_SCORE", "UCLA_Loneliness_SCORE", "SVS_SCORE",                           
-         "FSS_SCORE","Global_Fatigue",  "Depression_SCORE", "GRSI")
+cols = c('Age', 'Sex', 'Condition', 'Mobility_Aid', "PASIDP_SCORE",  'Duration_Corrected', 'Sedentary_Hrs_Per_Day',
+         "Leaving_the_house_to_work_Hours_Per_Day", "Fear_of_COVID_19_SCORE", "UCLA_Loneliness_SCORE"                         
+         ,"Global_Fatigue",  "Depression_SCORE", "GRSI")
 
 
 # "Household_activity_SCORE"
@@ -151,7 +147,7 @@ eval_metrics(lr, test, predictions, target = 'Pain')
 
 cols_reg = c('LTPA_SCORE', "Anxiety_SCORE" )
 
-dummies <- dummyVars(Anxiety_SCORE ~ ., data = covid19.survey.data[,cols_reg])
+dummies <- caret::dummyVars(Anxiety_SCORE ~ ., data = covid19.survey.data[,cols_reg])
 
 train_dummies = predict(dummies, newdata = train[,cols_reg])
 
@@ -167,7 +163,7 @@ x_test = as.matrix(test_dummies)
 y_test = test$Anxiety_SCORE
 
 lambdas <- 10^seq(2, -3, by = -.1)
-ridge_reg = glmnet(x, y_train, nlambda = 25, alpha = 0, family = 'gaussian', lambda = lambdas)
+ridge_reg = glmnet::glmnet(x, y_train, nlambda = 25, alpha = 0, family = 'gaussian', lambda = lambdas)
 
 summary(ridge_reg)
 
@@ -257,16 +253,31 @@ elastic_reg$bestTune
 
 #---- Heatmap ----
 
+covid19.survey.data_scores.overall <- covid19.survey.data[,c(3,6,8,24,26,28,30,32,34,11,13,15,17,19,21)]
+
+neurological.condition <-unique(covid19.survey.data_scores.overall$Condition)
+neurological.condition<-subset(neurological.condition, (!(neurological.condition=="MD" |neurological.condition=="FM"  )))
+
+sex<-unique(covid19.survey.data_scores.overall$Sex)
+mobility.aid<-unique(covid19.survey.data_scores.overall$Mobility_Aid)
+mobility.aid<-subset(mobility.aid, (!(mobility.aid=="mobility scooter"| mobility.aid=="crutches"| mobility.aid=="none"| mobility.aid=="zimmer frame")))
+
+
+
+for (i in mobility.aid) {
+
+  covid19.survey.data_scores.overall_subset <-subset(covid19.survey.data_scores.overall, Mobility_Aid ==i)
+  
 # 1. Change to all variables to numeric
-covid19.survey.data.numeric <- lapply(covid19.survey.data, as.numeric)
-covid19.survey.data.numeric.df<-as.data.frame(covid19.survey.data.numeric)
+covid19.survey.data.numeric <- lapply(covid19.survey.data_scores.overall_subset, as.numeric)
+covid19.survey.data.numeric.df<-as.data.frame(covid19.survey.data_scores.overall_subset)
 
 # 2. Prepare data
-mydata <- covid19.survey.data.numeric.df[, -1] #remove first column
+mydata <- covid19.survey.data.numeric.df[, -c(1,2,3)] #remove first column
 head(mydata)
 
 # 3. Create correlation matrix using the R function cor() :
-cormat <- round(cor(mydata),2)
+cormat <- round(cor(mydata, method =  "spearman", use = "pairwise.complete.obs"),2)
 head(cormat)
 
 # 4. Create the correlation heatmap with ggplot2
@@ -296,18 +307,6 @@ upper_tri
 # Melt the correlation matrix
 melted_cormat <- reshape2::melt(upper_tri, na.rm = TRUE)
 
-# Heatmap
-ggplot2::ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
-  geom_tile(color = "white")+
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
-                       midpoint = 0, limit = c(-1,1), space = "Lab", 
-                       name="Pearson\nCorrelation") +
-  theme_minimal()+ 
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-                                   size = 12, hjust = 1))+
-  coord_fixed()
-
-# Reorder the correlation matrix
 reorder_cormat <- function(cormat){
   # Use correlation between variables as distance
   dd <- as.dist((1-cormat)/2)
@@ -315,30 +314,29 @@ reorder_cormat <- function(cormat){
   cormat <-cormat[hc$order, hc$order]
 }
 
-# Reordered correlation data visualization :
-
 # Reorder the correlation matrix
 cormat <- reorder_cormat(cormat)
 upper_tri <- get_upper_tri(cormat)
 # Melt the correlation matrix
 melted_cormat <- melt(upper_tri, na.rm = TRUE)
 # Create a ggheatmap
-ggheatmap <- ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
+ggheatmap <- ggplot2::ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
   geom_tile(color = "white")+
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
                        midpoint = 0, limit = c(-1,1), space = "Lab", 
                        name="Pearson\nCorrelation") +
   theme_minimal()+ # minimal theme
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-                                   size = 12, hjust = 1))+
+                                   size = 10, hjust = 1), 
+        axis.text.y = element_text(size=10))+
   coord_fixed()
 # Print the heatmap
 print(ggheatmap)
 
 # Add correlation coefficients on the heatmap
 
-ggheatmap + 
-  geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) +
+myplot<- ggheatmap + 
+  geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) + ggtitle(i)+
   theme(
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
@@ -352,9 +350,21 @@ ggheatmap +
   guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
                                title.position = "top", title.hjust = 0.5))
 
+ggsave(myplot,
+       filename=paste('Heat_plots_',i,".pdf",sep=""),
+       path='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/Heat_plots',
+       device = 'pdf',
+       scale = 1,
+       width = 9,
+       height = 8,
+       units = "in",
+       dpi = 300
+       
+       
+       )
 
 
-
+}
 
 ###https://www.pluralsight.com/guides/linear-lasso-and-ridge-regression-with-r
 
