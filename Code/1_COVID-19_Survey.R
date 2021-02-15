@@ -28,6 +28,7 @@ library(likert)
 library(HH)
 library(dplyr)
 library(Hmisc)
+library(finalfit) 
 ##
 ## ----------------------------
 ##
@@ -39,6 +40,7 @@ library(Hmisc)
 #if(!require(HH)){install.packages("HH")}
 #if(!require(dplyr)){install.packages("dplyr")}
 #if(!require(Hmisc)){install.packages("Hmisc")}
+#if(!require(finalfit)){install.packages("finalfit")}
 ##
 #### ---------------------------
 ##
@@ -62,6 +64,39 @@ outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Co
 # Load original data
 covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 names(covid19.survey.data)
+
+
+#---------- Data cleaning and assessment ---------- 
+
+# 1. Count number of NA's in entire dataframe
+sum(is.na(covid19.survey.data))
+
+# 2. Count number of NA's per coloumn
+na_count <-sapply(covid19.survey.data, function(y) sum(length(which(is.na(y))))) %>%
+  as.data.frame()%>%sum()
+na_count
+
+#write.csv(na_count, '/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/number_of_NA.csv')
+
+# 3. Count number of complete answers
+full_count <-sapply(covid19.survey.data, function(y) sum(length(which(!(is.na(y)))))) %>%
+  as.data.frame()%>%sum()
+full_count
+
+# 4. Assess mechanism of missingness
+
+# Examine with ff_glimpse
+covid19.survey.data %>%
+  finalfit::ff_glimpse()
+
+# Identify missing values in each variable
+covid19.survey.data %>%
+  finalfit::missing_plot()
+
+# Look for patterns of missingness
+missing.data.pattern.plot <- covid19.survey.data %>% 
+  finalfit::missing_pattern()
+missing.data.pattern.plot
 
 
 #---------- Create Summary Table of Included Cohort ---------- 
