@@ -265,105 +265,105 @@ mobility.aid<-subset(mobility.aid, (!(mobility.aid=="mobility scooter"| mobility
 
 
 for (i in neurological.condition) {
-
+  
   covid19.survey.data_scores.overall_subset <-subset(covid19.survey.data_scores.overall, Condition ==i)
   
-# 1. Change to all variables to numeric
-covid19.survey.data.numeric <- lapply(covid19.survey.data_scores.overall_subset, as.numeric)
-covid19.survey.data.numeric.df<-as.data.frame(covid19.survey.data_scores.overall_subset)
-
-# 2. Prepare data
-mydata <- covid19.survey.data.numeric.df[, -c(1,2,3)] #remove first column
-head(mydata)
-
-# 3. Create correlation matrix using the R function cor() :
-cormat <- round(cor(mydata, method =  "spearman", use = "pairwise.complete.obs"),2)
-head(cormat)
-
-# 4. Create the correlation heatmap with ggplot2
-melted_cormat <- reshape2::melt(cormat)
-head(melted_cormat)
-
-ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
-  geom_tile()
-
-# 5. Get the lower and upper triangles of the correlation matrix
-
-# Get lower triangle of the correlation matrix
-get_lower_tri<-function(cormat){
-  cormat[upper.tri(cormat)] <- NA
-  return(cormat)
-}
-# Get upper triangle of the correlation matrix
-get_upper_tri <- function(cormat){
-  cormat[lower.tri(cormat)]<- NA
-  return(cormat)
-}
-
-upper_tri <- get_upper_tri(cormat)
-upper_tri
-
-# 5. Finished correlation matrix heatmap
-# Melt the correlation matrix
-melted_cormat <- reshape2::melt(upper_tri, na.rm = TRUE)
-
-reorder_cormat <- function(cormat){
-  # Use correlation between variables as distance
-  dd <- as.dist((1-cormat)/2)
-  hc <- hclust(dd)
-  cormat <-cormat[hc$order, hc$order]
-}
-
-# Reorder the correlation matrix
-cormat <- reorder_cormat(cormat)
-upper_tri <- get_upper_tri(cormat)
-# Melt the correlation matrix
-melted_cormat <- melt(upper_tri, na.rm = TRUE)
-# Create a ggheatmap
-ggheatmap <- ggplot2::ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
-  geom_tile(color = "white")+
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
-                       midpoint = 0, limit = c(-1,1), space = "Lab", 
-                       name="Pearson\nCorrelation") +
-  theme_minimal()+ # minimal theme
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-                                   size = 10, hjust = 1), 
-        axis.text.y = element_text(size=10))+
-  coord_fixed()
-# Print the heatmap
-print(ggheatmap)
-
-# Add correlation coefficients on the heatmap
-
-myplot<- ggheatmap + 
-  geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) + ggtitle(i)+
-  theme(
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.border = element_blank(),
-    panel.background = element_blank(),
-    axis.ticks = element_blank(),
-    legend.justification = c(1, 0),
-    legend.position = c(0.6, 0.7),
-    legend.direction = "horizontal")+
-  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
-                               title.position = "top", title.hjust = 0.5))
-
-ggsave(myplot,
-       filename=paste('Neurological_condition_',i,".pdf",sep=""),
-       path='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/Heat_plots/',
-       device = 'pdf',
-       scale = 1,
-       width = 9,
-       height = 8,
-       units = "in",
-       dpi = 300
-       
-       
-       )
-
-
+  # 1. Change to all variables to numeric
+  covid19.survey.data.numeric <- lapply(covid19.survey.data_scores.overall_subset, as.numeric)
+  covid19.survey.data.numeric.df<-as.data.frame(covid19.survey.data_scores.overall_subset)
+  
+  # 2. Prepare data
+  mydata <- covid19.survey.data.numeric.df[, -c(1,2,3)] #remove first column
+  head(mydata)
+  
+  # 3. Create correlation matrix using the R function cor() :
+  cormat <- round(cor(mydata, method =  "spearman", use = "pairwise.complete.obs"),2)
+  head(cormat)
+  
+  # 4. Create the correlation heatmap with ggplot2
+  melted_cormat <- reshape2::melt(cormat)
+  head(melted_cormat)
+  
+  ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+    geom_tile()
+  
+  # 5. Get the lower and upper triangles of the correlation matrix
+  
+  # Get lower triangle of the correlation matrix
+  get_lower_tri<-function(cormat){
+    cormat[upper.tri(cormat)] <- NA
+    return(cormat)
+  }
+  # Get upper triangle of the correlation matrix
+  get_upper_tri <- function(cormat){
+    cormat[lower.tri(cormat)]<- NA
+    return(cormat)
+  }
+  
+  upper_tri <- get_upper_tri(cormat)
+  upper_tri
+  
+  # 5. Finished correlation matrix heatmap
+  # Melt the correlation matrix
+  melted_cormat <- reshape2::melt(upper_tri, na.rm = TRUE)
+  
+  reorder_cormat <- function(cormat){
+    # Use correlation between variables as distance
+    dd <- as.dist((1-cormat)/2)
+    hc <- hclust(dd)
+    cormat <-cormat[hc$order, hc$order]
+  }
+  
+  # Reorder the correlation matrix
+  cormat <- reorder_cormat(cormat)
+  upper_tri <- get_upper_tri(cormat)
+  # Melt the correlation matrix
+  melted_cormat <- melt(upper_tri, na.rm = TRUE)
+  # Create a ggheatmap
+  ggheatmap <- ggplot2::ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
+    geom_tile(color = "white")+
+    scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                         midpoint = 0, limit = c(-1,1), space = "Lab", 
+                         name="Pearson\nCorrelation") +
+    theme_minimal()+ # minimal theme
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, 
+                                     size = 10, hjust = 1), 
+          axis.text.y = element_text(size=10))+
+    coord_fixed()
+  # Print the heatmap
+  print(ggheatmap)
+  
+  # Add correlation coefficients on the heatmap
+  
+  myplot<- ggheatmap + 
+    geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) + ggtitle(i)+
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.border = element_blank(),
+      panel.background = element_blank(),
+      axis.ticks = element_blank(),
+      legend.justification = c(1, 0),
+      legend.position = c(0.6, 0.7),
+      legend.direction = "horizontal")+
+    guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
+                                 title.position = "top", title.hjust = 0.5))
+  
+  ggsave(myplot,
+         filename=paste('Neurological_condition_',i,".pdf",sep=""),
+         path='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/Heat_plots/',
+         device = 'pdf',
+         scale = 1,
+         width = 9,
+         height = 8,
+         units = "in",
+         dpi = 300
+         
+         
+  )
+  
+  
 }
 
 ###https://www.pluralsight.com/guides/linear-lasso-and-ridge-regression-with-r
