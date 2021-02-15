@@ -16,11 +16,12 @@
 "Multiple Sclerosis","considerably more",5,0.0746268656716418
 "Multiple Sclerosis","slightly less",12,0.17910447761194
 "Multiple Sclerosis","slightly more",4,0.0597014925373134
-"Parkinson's disease","about the same",3,0.0857142857142857
-"Parkinson's disease","considerably less",12,0.342857142857143
-"Parkinson's disease","considerably more",5,0.142857142857143
-"Parkinson's disease","slightly less",11,0.314285714285714
-"Parkinson's disease","slightly more",4,0.114285714285714
+"Parkinson's disease","",1,0.0277777777777778
+"Parkinson's disease","about the same",3,0.0833333333333333
+"Parkinson's disease","considerably less",12,0.333333333333333
+"Parkinson's disease","considerably more",5,0.138888888888889
+"Parkinson's disease","slightly less",11,0.305555555555556
+"Parkinson's disease","slightly more",4,0.111111111111111
 "Spinal Cord Injury","about the same",8,0.25
 "Spinal Cord Injury","considerably less",11,0.34375
 "Spinal Cord Injury","considerably more",5,0.15625

@@ -54,11 +54,11 @@ gc() # garbage collector
 ##
 ## Set working directory and output directorypaths
 ##
-setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 ##
 ##
-outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
@@ -260,13 +260,13 @@ neurological.condition<-subset(neurological.condition, (!(neurological.condition
 
 sex<-unique(covid19.survey.data_scores.overall$Sex)
 mobility.aid<-unique(covid19.survey.data_scores.overall$Mobility_Aid)
-mobility.aid<-subset(mobility.aid, (!(mobility.aid=="mobility scooter"| mobility.aid=="crutches"| mobility.aid=="none"| mobility.aid=="zimmer frame")))
+mobility.aid<-subset(mobility.aid, (!(mobility.aid=="mobility scooter"| mobility.aid=="crutches"| mobility.aid=="other"| mobility.aid=="zimmer frame")))
 
 
 
-for (i in mobility.aid) {
+for (i in neurological.condition) {
 
-  covid19.survey.data_scores.overall_subset <-subset(covid19.survey.data_scores.overall, Mobility_Aid ==i)
+  covid19.survey.data_scores.overall_subset <-subset(covid19.survey.data_scores.overall, Condition ==i)
   
 # 1. Change to all variables to numeric
 covid19.survey.data.numeric <- lapply(covid19.survey.data_scores.overall_subset, as.numeric)
@@ -351,8 +351,8 @@ myplot<- ggheatmap +
                                title.position = "top", title.hjust = 0.5))
 
 ggsave(myplot,
-       filename=paste('Heat_plots_',i,".pdf",sep=""),
-       path='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/Heat_plots',
+       filename=paste('Neurological_condition_',i,".pdf",sep=""),
+       path='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/Heat_plots/',
        device = 'pdf',
        scale = 1,
        width = 9,
