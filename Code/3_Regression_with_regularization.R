@@ -16,7 +16,9 @@
 ## Data source: COVID-19 survey
 ##
 ## Notes: This analysis is for the publication Nightingale et al, 2021 published in XX. [add link here]
-##   
+##
+## https://www.pluralsight.com/guides/linear-lasso-and-ridge-regression-with-r
+##
 ## ---------------------------
 ##
 ## load up the packages we will need:  
@@ -42,6 +44,8 @@ library(reshape2)
 ##if(!require(caret)){install.packages("caret")}
 ##if(!require(ggplot2)){install.packages("ggplot2")}
 ##if(!require(repr)){install.packages("repr")}
+##if(!require(glmnet)){install.packages("glmnet")}
+##if(!require(reshape2)){install.packages("reshape2")}
 ##
 #### ---------------------------
 ##
@@ -54,11 +58,11 @@ gc() # garbage collector
 ##
 ## Set working directory and output directorypaths
 ##
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 ##
 ##
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
@@ -71,184 +75,84 @@ names(covid19.survey.data)
 # Take a glimpse at the data and its structure
 dplyr::glimpse(covid19.survey.data)
 
-##---- 1. Data Partitioning ----
-# We will build our model on the training set and evaluate its performance on the test set. This is called the holdout-validation approach for 
-# evaluating model performance.
+# Create model matrix
+x_vars <- model.matrix(Anxiety_SCORE ~ Ethnicity+Age+Sex+PASIDP_SCORE+Mobility_Aid+Condition+Sedentary_Hrs_Per_Day+Situation, data = covid19.survey.data)
+y_var <- covid19.survey.data$HAQ_SDI_Mean
+lambda_seq <- 10^seq(2, -2, by = -.1)
 
-# The is line sets the random seed for reproducibility of results. 
-set.seed(100) 
+# Splitting the data into test and train
+set.seed(86)
+train = sample(1:nrow(x_vars), nrow(x_vars)/2)
+x_test = (-train)
+y_test = y_var[x_test]
 
-# The train set contains 70 percent of the data while the test set contains the remaining 30 percent.
-index = sample(1:nrow(covid19.survey.data), 0.7*nrow(covid19.survey.data)) 
+cv_output <- cv.glmnet(x_vars[train,], y_var[train],
+                       alpha = 1, lambda = lambda_seq, 
+                       nfolds = 5)
 
-# Create the training data 
-train = covid19.survey.data[index,] 
+# Identifying best lamda
+best_lam <- cv_output$lambda.min
+best_lam
 
-# Create the test data
-test = covid19.survey.data[-index,] 
+# Rebuilding the model with best lamda value identified
+lasso_best <- glmnet(x_vars[train,], y_var[train], alpha = 1, lambda = best_lam)
+pred <- predict(lasso_best, s = best_lam, newx = x_vars[x_test,])
 
-# Show dimension of train and test data set
-dim(train)
-dim(test)
+final <- cbind(y_var[test], pred)
 
-##---- 2. Scaling the Numeric Features (variables) ----
+# Checking the first six obs
+head(final)
 
-# Create list containing the names of independent numeric variables. 
-cols = c('Age', 'Sex', 'Condition', 'Mobility_Aid', "PASIDP_SCORE",  'Duration_Corrected', 'Sedentary_Hrs_Per_Day',
-         "Leaving_the_house_to_work_Hours_Per_Day", "Fear_of_COVID_19_SCORE", "UCLA_Loneliness_SCORE"                         
-         ,"Global_Fatigue",  "Depression_SCORE", "GRSI")
+actual <- test$actual
+preds <- test$predicted
+rss <- sum((preds - actual) ^ 2)
+tss <- sum((actual - mean(actual)) ^ 2)
+rsq <- 1 - rss/tss
+rsq
 
+# Inspecting beta coefficients: getting the list with the most important variables
+coef(lasso_best)
 
-# "Household_activity_SCORE"
-# Anxiety_SCORE
-# Work_related_activity_SCORE
-#PASIDP_SCORE
+#------------------- Unbiased recursive partitioning ---------------------------
 
-# preProcess function from the caret package to complete the scaling task. 
-# The pre-processing object is fit only to the training data.
-pre_proc_val <- caret::preProcess(train[,cols], method = c("center", "scale"))
+#--------- URP: Depression ----------
+urp.model.depression<-partykit::ctree(Depression_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.depression
+plot(urp.model.depression)
 
-#The scaling is applied on both the train and test sets. 
-train[,cols] = predict(pre_proc_val, train[,cols])
-test[,cols] = predict(pre_proc_val, test[,cols])
+info_node(node_party(urp.model.depression))
 
-summary(train)
+#--------- URP: Anxiety ----------
+#subset data to remove NA from the y variable
+Anxiety_score_without_na <-subset(covid19.survey.data, (!is.na(Anxiety_SCORE)))
 
+urp.model.anxiety<-partykit::ctree(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=Anxiety_score_without_na, na.action = na.pass)
+urp.model.anxiety
+plot(urp.model.anxiety)
 
-##---- 3. Linear Regression ----
+info_node(node_party(urp.model.anxiety))
 
-lr = lm(HAQ_SDI_Mean ~ Age+Sex+PASIDP_SCORE+Mobility_Aid+Condition+Sedentary_Hrs_Per_Day, data = covid19.survey.data)
-summary(lr)
+#--------- URP: HAQ_SDI_Mean ----------
+urp.model.HAQ_SDI_Mean<-partykit::ctree(HAQ_SDI_Mean~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.HAQ_SDI_Mean
+plot(urp.model.HAQ_SDI_Mean)
 
-
-##---- 4. Model Evaluation Metrics ----
-#Step 4.1 - create the evaluation metrics function
-eval_metrics = function(model, df, predictions, target){
-  resids = df[,target] - predictions
-  resids2 = resids**2
-  N = length(predictions)
-  r2 = as.character(round(summary(model)$r.squared, 2))
-  adj_r2 = as.character(round(summary(model)$adj.r.squared, 2))
-  print(adj_r2) #Adjusted R-squared
-  print(as.character(round(sqrt(sum(resids2)/N), 2))) #RMSE
-}
-
-# Step 4.2 - predicting and evaluating the model on train data
-predictions = predict(lr, newdata = train)
-eval_metrics(lr, train, predictions, target = 'HAQ_SDI_Mean')
-
-# Step 4.3 - predicting and evaluating the model on test data --> first numer is R2 and second RMSE
-predictions = predict(lr, newdata = test)
-eval_metrics(lr, test, predictions, target = 'HAQ_SDI_Mean')
+info_node(node_party(urp.model.HAQ_SDI_Mean))
 
 
+#--------- URP: Pain ----------
+urp.model.pain<-partykit::ctree(Pain~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.pain
+plot(urp.model.pain)
 
-##---- 5. Regularization: Ridge ----
+info_node(node_party(urp.model.pain))
 
-cols_reg = c('LTPA_SCORE', "Anxiety_SCORE" )
+#--------- URP: Change in PA ----------
+urp.model.change_in_PA<-partykit::ctree(Change_in_PA~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.change_in_PA
+plot(urp.model.change_in_PA)
 
-dummies <- caret::dummyVars(Anxiety_SCORE ~ ., data = covid19.survey.data[,cols_reg])
-
-train_dummies = predict(dummies, newdata = train[,cols_reg])
-
-test_dummies = predict(dummies, newdata = test[,cols_reg])
-
-print(dim(train_dummies)); print(dim(test_dummies))
-
-
-x = as.matrix(train_dummies)
-y_train = train$Anxiety_SCORE
-
-x_test = as.matrix(test_dummies)
-y_test = test$Anxiety_SCORE
-
-lambdas <- 10^seq(2, -3, by = -.1)
-ridge_reg = glmnet::glmnet(x, y_train, nlambda = 25, alpha = 0, family = 'gaussian', lambda = lambdas)
-
-summary(ridge_reg)
-
-
-cv_ridge <- cv.glmnet(x, y_train, alpha = 0, lambda = lambdas)
-optimal_lambda <- cv_ridge$lambda.min
-optimal_lambda
-
-
-# Compute R^2 from true and predicted values
-eval_results <- function(true, predicted, df) {
-  SSE <- sum((predicted - true)^2)
-  SST <- sum((true - mean(true))^2)
-  R_square <- 1 - SSE / SST
-  RMSE = sqrt(SSE/nrow(df))
-  
-  
-  # Model performance metrics
-  data.frame(
-    RMSE = RMSE,
-    Rsquare = R_square
-  )
-  
-}
-
-# Prediction and evaluation on train data
-predictions_train <- predict(ridge_reg, s = optimal_lambda, newx = x)
-eval_results(y_train, predictions_train, train)
-
-# Prediction and evaluation on test data
-predictions_test <- predict(ridge_reg, s = optimal_lambda, newx = x_test)
-eval_results(y_test, predictions_test, test)
-
-
-
-##---- 6. Regularization: Lasso ----
-
-lambdas <- 10^seq(2, -3, by = -.1)
-
-# Setting alpha = 1 implements lasso regression
-lasso_reg <- cv.glmnet(x, y_train, alpha = 1, lambda = lambdas, standardize = TRUE, nfolds = 5)
-
-# Best 
-lambda_best <- lasso_reg$lambda.min 
-lambda_best
-
-
-lasso_model <- glmnet(x, y_train, alpha = 1, lambda = lambda_best, standardize = TRUE)
-
-predictions_train <- predict(lasso_model, s = lambda_best, newx = x)
-eval_results(y_train, predictions_train, train)
-
-predictions_test <- predict(lasso_model, s = lambda_best, newx = x_test)
-eval_results(y_test, predictions_test, test)
-
-
-##---- 7. Regularization: ELastic Net ----
-# Set training control
-train_cont <- trainControl(method = "repeatedcv",
-                           number = 10,
-                           repeats = 5,
-                           search = "random",
-                           verboseIter = TRUE)
-
-# Train the model
-elastic_reg <- train(unemploy ~ .,
-                     data = train,
-                     method = "glmnet",
-                     preProcess = c("center", "scale"),
-                     tuneLength = 10,
-                     trControl = train_cont)
-
-# Make predictions on training set
-predictions_train <- predict(elastic_reg, x)
-eval_results(y_train, predictions_train, train) 
-
-# Make predictions on test set
-predictions_test <- predict(elastic_reg, x_test)
-eval_results(y_test, predictions_test, test)
-
-
-
-# Best tuning parameter
-elastic_reg$bestTune
-
+info_node(node_party(urp.model.change_in_PA))
 
 
 #---- Heatmap ----
@@ -261,7 +165,6 @@ neurological.condition<-subset(neurological.condition, (!(neurological.condition
 sex<-unique(covid19.survey.data_scores.overall$Sex)
 mobility.aid<-unique(covid19.survey.data_scores.overall$Mobility_Aid)
 mobility.aid<-subset(mobility.aid, (!(mobility.aid=="mobility scooter"| mobility.aid=="crutches"| mobility.aid=="other"| mobility.aid=="zimmer frame")))
-
 
 
 for (i in neurological.condition) {
@@ -359,26 +262,12 @@ for (i in neurological.condition) {
          height = 8,
          units = "in",
          dpi = 300
-         
-         
   )
-  
-  
+
 }
 
-###https://www.pluralsight.com/guides/linear-lasso-and-ridge-regression-with-r
 
 
-#subset data to remove NA from the y variable
-Anxiety_score_without_na <-subset(covid19.survey.data, (!is.na(Anxiety_SCORE)))
-
-
-model1<-partykit::ctree(Anxiety_SCORE~Age+as.factor(Sex), data=Anxiety_score_without_na, na.action = na.pass)
-plot(model1)
-
-
-model2<-ctree(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Ethnicity)+as.factor(Condition)+Duration_Corrected+as.factor(Mobility_Aid)+PASIDP_SCORE, data=Anxiety_score_without_na, na.action = na.pass)
-plot(model2)
 
 
 #### -------------------------------------------------------------------------- CODE END ------------------------------------------------------------------------------------------------####
