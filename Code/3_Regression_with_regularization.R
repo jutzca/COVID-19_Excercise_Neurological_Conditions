@@ -32,6 +32,7 @@ library(ggplot2)
 library(repr)
 library(glmnet)
 library(reshape2)
+library(sjPlot)
 ##
 ## ----------------------------
 ##
@@ -116,7 +117,7 @@ coef(lasso_best)
 #------------------- Unbiased recursive partitioning ---------------------------
 
 #--------- URP: Depression ----------
-urp.model.depression<-partykit::ctree(Depression_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.depression<-partykit::ctree(Depression_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
 urp.model.depression
 plot(urp.model.depression)
 
@@ -126,14 +127,14 @@ info_node(node_party(urp.model.depression))
 #subset data to remove NA from the y variable
 Anxiety_score_without_na <-subset(covid19.survey.data, (!is.na(Anxiety_SCORE)))
 
-urp.model.anxiety<-partykit::ctree(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=Anxiety_score_without_na, na.action = na.pass)
+urp.model.anxiety<-partykit::ctree(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=Anxiety_score_without_na, na.action = na.pass)
 urp.model.anxiety
 plot(urp.model.anxiety)
 
 info_node(node_party(urp.model.anxiety))
 
 #--------- URP: HAQ_SDI_Mean ----------
-urp.model.HAQ_SDI_Mean<-partykit::ctree(HAQ_SDI_Mean~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.HAQ_SDI_Mean<-partykit::ctree(HAQ_SDI_Mean~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
 urp.model.HAQ_SDI_Mean
 plot(urp.model.HAQ_SDI_Mean)
 
@@ -141,18 +142,43 @@ info_node(node_party(urp.model.HAQ_SDI_Mean))
 
 
 #--------- URP: Pain ----------
-urp.model.pain<-partykit::ctree(Pain~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.pain<-partykit::ctree(Pain~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
 urp.model.pain
 plot(urp.model.pain)
 
 info_node(node_party(urp.model.pain))
 
 #--------- URP: Change in PA ----------
-urp.model.change_in_PA<-partykit::ctree(Change_in_PA~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.change_in_PA<-partykit::ctree(Change_in_PA~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
 urp.model.change_in_PA
 plot(urp.model.change_in_PA)
 
 info_node(node_party(urp.model.change_in_PA))
+
+
+#--------- URP: Fatigue ----------
+urp.model.fatigue<-partykit::ctree(FSS_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.fatigue
+plot(urp.model.fatigue)
+
+info_node(node_party(urp.model.fatigue))
+
+
+#--------- URP: Vitality ----------
+urp.model.vitality<-partykit::ctree(SVS_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.vitality
+plot(urp.model.vitality)
+
+info_node(node_party(urp.model.vitality))
+
+
+#--------- URP: UCLA_Loneliness_SCORE ----------
+urp.model.loneliness<-partykit::ctree(UCLA_Loneliness_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.loneliness
+plot(urp.model.loneliness)
+
+info_node(node_party(urp.model.loneliness))
+
 
 
 #---- Heatmap ----
