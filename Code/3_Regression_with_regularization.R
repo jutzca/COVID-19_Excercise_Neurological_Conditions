@@ -46,6 +46,7 @@ library(sjPlot)
 ##if(!require(ggplot2)){install.packages("ggplot2")}
 ##if(!require(repr)){install.packages("repr")}
 ##if(!require(glmnet)){install.packages("glmnet")}
+##if(!require(sjPlot)){install.packages("sjPlot")}
 ##if(!require(reshape2)){install.packages("reshape2")}
 ##
 #### ---------------------------
@@ -76,43 +77,93 @@ names(covid19.survey.data)
 # Take a glimpse at the data and its structure
 dplyr::glimpse(covid19.survey.data)
 
-# Create model matrix
-x_vars <- model.matrix(HAQ_SDI_Mean~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data = covid19.survey.data)
-y_var <- covid19.survey.data$HAQ_SDI_Mean
-lambda_seq <- 10^seq(2, -2, by = -.1)
 
-# Splitting the data into test and train
-set.seed(86)
-train = sample(1:nrow(x_vars), nrow(x_vars)/2)
-x_test = (-train)
-y_test = y_var[x_test]
+#--------- Non-linear GLM: Depression ----------
 
-cv_output <- cv.glmnet(x_vars[train,], y_var[train],
-                       alpha = 1, lambda = lambda_seq, 
-                       nfolds = 5)
+# Subset data
+covid19.survey.data.depression <-subset(covid19.survey.data, Depression_SCORE> 0)
 
-# Identifying best lamda
-best_lam <- cv_output$lambda.min
-best_lam
+# Create model
+glm.depression <- glm(Depression_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.depression)
+summary(glm.depression)
+sjPlot::tab_model(glm.depression)
 
-# Rebuilding the model with best lamda value identified
-lasso_best <- glmnet(x_vars[train,], y_var[train], alpha = 1, lambda = best_lam)
-pred <- predict(lasso_best, s = best_lam, newx = x_vars[x_test,])
+# Plot model output
+plot(glm.depression)
 
-final <- cbind(y_var[test], pred)
+#--------- Non-linear GLM: Depression ----------
 
-# Checking the first six obs
-head(final)
+# Subset data
+covid19.survey.data.anxiety <-subset(covid19.survey.data, Anxiety_SCORE> 0)
 
-actual <- test$actual
-preds <- test$predicted
-rss <- sum((preds - actual) ^ 2)
-tss <- sum((actual - mean(actual)) ^ 2)
-rsq <- 1 - rss/tss
-rsq
+# Create model
+glm.anxiety <- glm(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.anxiety)
+summary(glm.anxiety)
+sjPlot::tab_model(glm.anxiety)
 
-# Inspecting beta coefficients: getting the list with the most important variables
-coef(lasso_best)
+# Plot model output
+plot(glm.anxiety)
+
+
+
+#--------- Non-linear GLM: HAQ_SDI_Mean ----------
+
+# Subset data
+covid19.survey.data.HAQ_SDI_Mean <-subset(covid19.survey.data, HAQ_SDI_Mean> 0)
+
+# Create model
+glm.HAQ_SDI_Mean <- glm(HAQ_SDI_Mean~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.HAQ_SDI_Mean)
+summary(glm.HAQ_SDI_Mean)
+sjPlot::tab_model(glm.HAQ_SDI_Mean)
+
+# Plot model output
+plot(glm.HAQ_SDI_Mean)
+
+
+#--------- Non-linear GLM: Pain ----------
+
+# Subset data
+covid19.survey.data.Pain <-subset(covid19.survey.data, Pain> 0)
+
+# Create model
+glm.Pain <- glm(Pain~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.Pain)
+summary(glm.Pain)
+sjPlot::tab_model(glm.Pain)
+
+# Plot model output
+plot(glm.Pain)
+
+#--------- Non-linear GLM: Fatigue ----------
+
+# Subset data
+covid19.survey.data.FSS_SCORE <-subset(covid19.survey.data, FSS_SCORE> 0)
+
+# Create model
+glm.FSS_SCORE <- glm(FSS_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.FSS_SCORE)
+summary(glm.FSS_SCORE)
+sjPlot::tab_model(glm.FSS_SCORE)
+
+# Plot model output
+plot(glm.FSS_SCORE)
+
+
+#--------- Non-linear GLM: Loneliness ----------
+
+# Subset data
+covid19.survey.data.UCLA_Loneliness_SCORE <-subset(covid19.survey.data, UCLA_Loneliness_SCORE> 0)
+
+# Create model
+glm.UCLA_Loneliness_SCORE <- glm(UCLA_Loneliness_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.UCLA_Loneliness_SCORE)
+summary(glm.UCLA_Loneliness_SCORE)
+sjPlot::tab_model(glm.UCLA_Loneliness_SCORE)
+
+# Plot model output
+plot(glm.UCLA_Loneliness_SCORE)
+
+
+
+
+
 
 #------------------- Unbiased recursive partitioning ---------------------------
 
