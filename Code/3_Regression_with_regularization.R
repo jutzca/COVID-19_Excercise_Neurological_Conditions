@@ -77,7 +77,7 @@ names(covid19.survey.data)
 dplyr::glimpse(covid19.survey.data)
 
 # Create model matrix
-x_vars <- model.matrix(Anxiety_SCORE ~ Ethnicity+Age+Sex+PASIDP_SCORE+Mobility_Aid+Condition+Sedentary_Hrs_Per_Day+Situation, data = covid19.survey.data)
+x_vars <- model.matrix(HAQ_SDI_Mean~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, data = covid19.survey.data)
 y_var <- covid19.survey.data$HAQ_SDI_Mean
 lambda_seq <- 10^seq(2, -2, by = -.1)
 
