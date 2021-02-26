@@ -84,20 +84,20 @@ dplyr::glimpse(covid19.survey.data)
 covid19.survey.data.depression <-subset(covid19.survey.data, Depression_SCORE> 0)
 
 # Create model
-glm.depression <- glm(Depression_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.depression)
+glm.depression <- glm(Depression_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.depression)
 summary(glm.depression)
 sjPlot::tab_model(glm.depression)
 
-# Plot model output
+  # Plot model output
 plot(glm.depression)
 
-#--------- Non-linear GLM: Depression ----------
+#--------- Non-linear GLM: Anxiety ----------
 
 # Subset data
 covid19.survey.data.anxiety <-subset(covid19.survey.data, Anxiety_SCORE> 0)
 
 # Create model
-glm.anxiety <- glm(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.anxiety)
+glm.anxiety <- glm(Anxiety_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+PASIDP_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.anxiety)
 summary(glm.anxiety)
 sjPlot::tab_model(glm.anxiety)
 
