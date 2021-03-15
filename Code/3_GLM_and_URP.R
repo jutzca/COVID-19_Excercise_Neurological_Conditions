@@ -1,8 +1,8 @@
 ## ---------------------------
 ##
-## Script name: 2_Linear_regression_with_regularization
+## Script name: 3_GLM_and_URP
 ##
-## Purpose of script: To determine predictors of physical activity.
+## Purpose of script: To determine predictors of physical activity using GLMs and URP.
 ##
 ## Author: Dr. Catherine Jutzeler
 ##
@@ -38,16 +38,16 @@ library(sjPlot)
 ##
 ## Install packages needed:  (uncomment as required)
 ##
-##if(!require(partykit)){install.packages("partykit")}
-##if(!require(plyr)){install.packages("plyr")}
-##if(!require(readr)){install.packages("readr")}
-##if(!require(dplyr)){install.packages("dplyr")}
-##if(!require(caret)){install.packages("caret")}
-##if(!require(ggplot2)){install.packages("ggplot2")}
-##if(!require(repr)){install.packages("repr")}
-##if(!require(glmnet)){install.packages("glmnet")}
-##if(!require(sjPlot)){install.packages("sjPlot")}
-##if(!require(reshape2)){install.packages("reshape2")}
+# if(!require(partykit)){install.packages("partykit")}
+# if(!require(plyr)){install.packages("plyr")}
+# if(!require(readr)){install.packages("readr")}
+# if(!require(dplyr)){install.packages("dplyr")}
+# if(!require(caret)){install.packages("caret")}
+# if(!require(ggplot2)){install.packages("ggplot2")}
+# if(!require(repr)){install.packages("repr")}
+# if(!require(glmnet)){install.packages("glmnet")}
+# if(!require(sjPlot)){install.packages("sjPlot")}
+# if(!require(reshape2)){install.packages("reshape2")}
 ##
 #### ---------------------------
 ##
@@ -60,11 +60,11 @@ gc() # garbage collector
 ##
 ## Set working directory and output directorypaths
 ##
-setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 ##
 ##
-outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
