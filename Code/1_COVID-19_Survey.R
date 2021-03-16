@@ -3,7 +3,7 @@
 ## Script name: 1_COVID-19_survey
 ##
 ## Purpose of script: To analyze and visualize the data from the COVID-19 survey assessing how the COVID-10 pamdemic has impacted the physical activity in patients
-##                    suffering from neurological diseases. A cross-sectional study
+##                    suffering from neurological diseases. This code was written to create Table 1 and 2 of the manuscript.
 ##
 ## Author: Dr. Catherine Jutzeler
 ##
@@ -138,8 +138,15 @@ units(covid19.survey.data$Age) <- "years"
 table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+Situation+GRSI, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
 
+# Table 1: Demographics
 table1::table1(~ Depression_SCORE+Anxiety_SCORE+Global_Fatigue+Fear_of_COVID_19_SCORE+UCLA_Loneliness_SCORE+HAQ_SDI_Mean+Pain+Sedentary_Hrs_Per_Day+Exercise_SCORE+LTPA_SCORE |Condition, 
                data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
+
+# Table 2: Physical Activity
+table1::table1(~ Sedentary_Hrs_Per_Day+Walking_wheeling_Hours_Per_Day+Light_sport_Hours_Per_Day+Moderate_sport_Hours_Per_Day+Strenous_sport_Hours_Per_Day+Exercise_Hours_Per_Day+Light_housework_Hours_Per_Day+
+               Heavy_housework_Hours_Per_Day+Home_repairs_Hours_Per_Day+Yard_work_Hours_Per_Day+Gardening_Hours_Per_Day+Caring_Hours_Per_Day+Work_related_activity_Hours_Per_Day+
+                 Leaving_the_house_to_work_Hours_Per_Day, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
 
 # 7. Draw historgrams and save plots

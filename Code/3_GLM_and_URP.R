@@ -77,7 +77,6 @@ names(covid19.survey.data)
 # Take a glimpse at the data and its structure
 dplyr::glimpse(covid19.survey.data)
 
-
 #--------- Non-linear GLM: Depression ----------
 
 # Subset data
@@ -104,8 +103,6 @@ sjPlot::tab_model(glm.anxiety)
 # Plot model output
 plot(glm.anxiety)
 
-
-
 #--------- Non-linear GLM: HAQ_SDI_Mean ----------
 
 # Subset data
@@ -118,7 +115,6 @@ sjPlot::tab_model(glm.HAQ_SDI_Mean)
 
 # Plot model output
 plot(glm.HAQ_SDI_Mean)
-
 
 #--------- Non-linear GLM: Pain ----------
 
