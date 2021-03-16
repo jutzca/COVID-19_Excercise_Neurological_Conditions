@@ -38,16 +38,16 @@ library(Hmisc)
 ##
 ## Install packages needed:  (uncomment as required)
 ##
-#if(!require(table1)){install.packages("table1")}
-#if(!require(ggplot2)){install.packages("ggplot2")}
-#if(!require(likert)){install.packages("likert")}
-#if(!require(HH)){install.packages("HH")}
-#if(!require(dplyr)){install.packages("dplyr")}
-#if(!require(reshape2)){install.packages("reshape2")}
-#if(!require(RColorBrewer)){install.packages("RColorBrewer")}
-#if(!require(ggthemes)){install.packages("ggthemes")}
-#if(!require(stringr)){install.packages("stringr")}
-#if(!require(Hmisc)){install.packages("Hmisc")}
+# if(!require(table1)){install.packages("table1")}
+# if(!require(ggplot2)){install.packages("ggplot2")}
+# if(!require(likert)){install.packages("likert")}
+# if(!require(HH)){install.packages("HH")}
+# if(!require(dplyr)){install.packages("dplyr")}
+# if(!require(reshape2)){install.packages("reshape2")}
+# if(!require(RColorBrewer)){install.packages("RColorBrewer")}
+# if(!require(ggthemes)){install.packages("ggthemes")}
+# if(!require(stringr)){install.packages("stringr")}
+# if(!require(Hmisc)){install.packages("Hmisc")}
 ##
 #### ---------------------------
 ##
@@ -456,7 +456,7 @@ ggsave(
   device = 'pdf',
   path = outdir_figures,
   scale = 1,
-  width = 8,
+  width = 10,
   height = 4,
   units = "in",
   dpi = 300

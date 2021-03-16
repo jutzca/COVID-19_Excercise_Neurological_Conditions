@@ -1,13 +1,13 @@
 "Sex","Change_in_PA","n","freq"
-"Female","",1,0.0050251256281407
-"Female","about the same",16,0.0804020100502513
-"Female","considerably less",68,0.341708542713568
-"Female","considerably more",16,0.0804020100502513
-"Female","slightly less",31,0.155778894472362
-"Female","slightly more",10,0.050251256281407
-"Male","about the same",13,0.0653266331658292
-"Male","considerably less",19,0.0954773869346734
-"Male","considerably more",2,0.0100502512562814
-"Male","slightly less",18,0.0904522613065327
-"Male","slightly more",4,0.0201005025125628
-"Prefer not to disclose","considerably less",1,0.0050251256281407
+"female","",1,0.0050251256281407
+"female","about the same",16,0.0804020100502513
+"female","considerably less",68,0.341708542713568
+"female","considerably more",16,0.0804020100502513
+"female","slightly less",31,0.155778894472362
+"female","slightly more",10,0.050251256281407
+"male","about the same",13,0.0653266331658292
+"male","considerably less",19,0.0954773869346734
+"male","considerably more",2,0.0100502512562814
+"male","slightly less",18,0.0904522613065327
+"male","slightly more",4,0.0201005025125628
+"unknown","considerably less",1,0.0050251256281407

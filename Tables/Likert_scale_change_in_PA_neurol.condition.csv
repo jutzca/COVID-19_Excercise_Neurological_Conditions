@@ -1,31 +1,31 @@
 "Condition","Change_in_PA","n","freq"
-"Cerebral Palsy","about the same",1,0.0909090909090909
-"Cerebral Palsy","considerably less",5,0.454545454545455
-"Cerebral Palsy","considerably more",1,0.0909090909090909
-"Cerebral Palsy","slightly less",4,0.363636363636364
-"Fibromyalgia, Chronic fatigue syndrome, CRPS","about the same",2,0.133333333333333
-"Fibromyalgia, Chronic fatigue syndrome, CRPS","considerably less",4,0.266666666666667
-"Fibromyalgia, Chronic fatigue syndrome, CRPS","slightly less",7,0.466666666666667
-"Fibromyalgia, Chronic fatigue syndrome, CRPS","slightly more",2,0.133333333333333
-"Muscular dystrophy, neuromuscular diseases","about the same",3,0.136363636363636
-"Muscular dystrophy, neuromuscular diseases","considerably less",8,0.363636363636364
-"Muscular dystrophy, neuromuscular diseases","considerably more",2,0.0909090909090909
-"Muscular dystrophy, neuromuscular diseases","slightly less",9,0.409090909090909
-"Multiple Sclerosis","about the same",12,0.17910447761194
-"Multiple Sclerosis","considerably less",34,0.507462686567164
-"Multiple Sclerosis","considerably more",5,0.0746268656716418
-"Multiple Sclerosis","slightly less",12,0.17910447761194
-"Multiple Sclerosis","slightly more",4,0.0597014925373134
-"Parkinson's disease","",1,0.0277777777777778
-"Parkinson's disease","about the same",3,0.0833333333333333
-"Parkinson's disease","considerably less",12,0.333333333333333
-"Parkinson's disease","considerably more",5,0.138888888888889
-"Parkinson's disease","slightly less",11,0.305555555555556
-"Parkinson's disease","slightly more",4,0.111111111111111
-"Spinal Cord Injury","about the same",8,0.25
-"Spinal Cord Injury","considerably less",11,0.34375
-"Spinal Cord Injury","considerably more",5,0.15625
-"Spinal Cord Injury","slightly less",6,0.1875
-"Spinal Cord Injury","slightly more",2,0.0625
-"Stroke, ataxia's, other (spina bifida, dystonia)","considerably less",14,0.875
-"Stroke, ataxia's, other (spina bifida, dystonia)","slightly more",2,0.125
+"CP","about the same",1,0.0909090909090909
+"CP","considerably less",5,0.454545454545455
+"CP","considerably more",1,0.0909090909090909
+"CP","slightly less",4,0.363636363636364
+"FM","about the same",2,0.133333333333333
+"FM","considerably less",4,0.266666666666667
+"FM","slightly less",7,0.466666666666667
+"FM","slightly more",2,0.133333333333333
+"MD","about the same",3,0.136363636363636
+"MD","considerably less",8,0.363636363636364
+"MD","considerably more",2,0.0909090909090909
+"MD","slightly less",9,0.409090909090909
+"MS","about the same",12,0.17910447761194
+"MS","considerably less",34,0.507462686567164
+"MS","considerably more",5,0.0746268656716418
+"MS","slightly less",12,0.17910447761194
+"MS","slightly more",4,0.0597014925373134
+"PD","",1,0.0277777777777778
+"PD","about the same",3,0.0833333333333333
+"PD","considerably less",12,0.333333333333333
+"PD","considerably more",5,0.138888888888889
+"PD","slightly less",11,0.305555555555556
+"PD","slightly more",4,0.111111111111111
+"SCI","about the same",8,0.25
+"SCI","considerably less",11,0.34375
+"SCI","considerably more",5,0.15625
+"SCI","slightly less",6,0.1875
+"SCI","slightly more",2,0.0625
+"Stroke","considerably less",14,0.875
+"Stroke","slightly more",2,0.125

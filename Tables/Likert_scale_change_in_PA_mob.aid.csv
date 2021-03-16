@@ -1,32 +1,32 @@
 "Mobility_Aid","Change_in_PA","n","freq"
-"Manual wheelchair","about the same",1,0.0050251256281407
-"Manual wheelchair","considerably less",3,0.0150753768844221
-"Manual wheelchair","considerably more",1,0.0050251256281407
-"Manual wheelchair","slightly less",5,0.0251256281407035
-"Power wheelchair","about the same",9,0.0452261306532663
-"Power wheelchair","considerably less",17,0.085427135678392
-"Power wheelchair","considerably more",2,0.0100502512562814
-"Power wheelchair","slightly less",4,0.0201005025125628
-"Power wheelchair","slightly more",3,0.0150753768844221
-"Mobility scooter","considerably less",6,0.0301507537688442
-"Zimmer frame","",1,0.0050251256281407
-"Zimmer frame","about the same",8,0.0402010050251256
-"Zimmer frame","considerably less",28,0.14070351758794
-"Zimmer frame","considerably more",9,0.0452261306532663
-"Zimmer frame","slightly less",16,0.0804020100502513
-"Zimmer frame","slightly more",8,0.0402010050251256
-"Walking sticks","considerably less",1,0.0050251256281407
-"Walking sticks","considerably more",2,0.0100502512562814
-"Crutches","about the same",3,0.0150753768844221
-"Crutches","considerably less",8,0.0402010050251256
-"Crutches","considerably more",2,0.0100502512562814
-"Crutches","slightly less",6,0.0301507537688442
-"Crutches","slightly more",1,0.0050251256281407
-"None","about the same",5,0.0251256281407035
-"None","considerably less",21,0.105527638190955
-"None","considerably more",2,0.0100502512562814
-"None","slightly less",13,0.0653266331658292
-"None","slightly more",2,0.0100502512562814
-"Other","about the same",3,0.0150753768844221
-"Other","considerably less",4,0.0201005025125628
-"Other","slightly less",5,0.0251256281407035
+"crutches","about the same",1,0.0050251256281407
+"crutches","considerably less",3,0.0150753768844221
+"crutches","considerably more",1,0.0050251256281407
+"crutches","slightly less",5,0.0251256281407035
+"manual wheelchair","about the same",9,0.0452261306532663
+"manual wheelchair","considerably less",17,0.085427135678392
+"manual wheelchair","considerably more",2,0.0100502512562814
+"manual wheelchair","slightly less",4,0.0201005025125628
+"manual wheelchair","slightly more",3,0.0150753768844221
+"mobility scooter","considerably less",6,0.0301507537688442
+"none","",1,0.0050251256281407
+"none","about the same",8,0.0402010050251256
+"none","considerably less",28,0.14070351758794
+"none","considerably more",9,0.0452261306532663
+"none","slightly less",16,0.0804020100502513
+"none","slightly more",8,0.0402010050251256
+"other","considerably less",1,0.0050251256281407
+"other","considerably more",2,0.0100502512562814
+"powered wheelchair","about the same",3,0.0150753768844221
+"powered wheelchair","considerably less",8,0.0402010050251256
+"powered wheelchair","considerably more",2,0.0100502512562814
+"powered wheelchair","slightly less",6,0.0301507537688442
+"powered wheelchair","slightly more",1,0.0050251256281407
+"walking sticks","about the same",5,0.0251256281407035
+"walking sticks","considerably less",21,0.105527638190955
+"walking sticks","considerably more",2,0.0100502512562814
+"walking sticks","slightly less",13,0.0653266331658292
+"walking sticks","slightly more",2,0.0100502512562814
+"zimmer frame","about the same",3,0.0150753768844221
+"zimmer frame","considerably less",4,0.0201005025125628
+"zimmer frame","slightly less",5,0.0251256281407035

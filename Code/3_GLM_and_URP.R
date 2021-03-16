@@ -229,6 +229,15 @@ info_node(node_party(urp.model.loneliness))
 
 
 
+#--------- URP: PASIDP_SCORE ----------
+urp.model.PASIDP_SCORE<-partykit::ctree(PASIDP_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+Sedentary_Hrs_Per_Day, data=covid19.survey.data, na.action = na.pass)
+urp.model.PASIDP_SCORE
+plot(urp.model.PASIDP_SCORE)
+
+info_node(node_party(urp.model.PASIDP_SCORE))
+
+
+
 #---- Heatmap ----
 
 covid19.survey.data_scores.overall <- covid19.survey.data[,c(3,6,8,24,26,28,30,32,34,11,13,15,17,19,21)]
