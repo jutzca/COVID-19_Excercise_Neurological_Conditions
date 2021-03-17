@@ -11,6 +11,8 @@ Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS
 
 ## External resources
 
+## Folder Structure
+![alt text](/Git_tree.png)
 
 ## Contact
 Questions or comments related to the manuscript:
