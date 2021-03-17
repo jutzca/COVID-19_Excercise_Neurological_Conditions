@@ -9,7 +9,7 @@ Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS
 
 **Link to paper**: [Preprint](google.com)
 
-## Folder Structure
+## Organizational Structure of Repository
 ![alt text](/Git_tree.png)
 
 ## Contact
@@ -22,5 +22,5 @@ This repository is maintained by:
 ## Ethical approval
 Ethical approval was obtained from the University of Birmingham Science, Technology, Engineering and Mathematics ethics committee (ERN_20-0689) (18/05/20). Participants were advised that completion of the survey conferred consent with assurance that anonymity would be preserved through analysis and dissemination. 
 
-## Funding
-This study was funded by the XX.
+## Acknowledgement
+We would like to thank all the participants for their valuable time to complete this comprehensive questionnaire pack. Additionally, we would like to thank the various nationwide UK charities and organisations who helped to circulate the survey link. This is by no means an extensive list but we would like to gratefully acknowledge: Action for ME, Back Up Trust, Cerebral Palsy Midlands, Different Strokes, Disabled Ramblers, GAIN, International Spinal Research Trust, Motor Neurone Disease Association, MS Trust, Muscular Dystrophy UK, Neurokinex, Para dance UK, Parkinsons UK, Rooprai Spinal Trust, Shaw Trust, Spinal Injuries Association. Catherine Jutzeler is supported by a Swiss National Science Foundation Ambizione Grant (#PZ00P3_186101).
