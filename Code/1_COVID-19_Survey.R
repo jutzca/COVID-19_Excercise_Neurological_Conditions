@@ -144,9 +144,51 @@ table1::table1(~ Depression_SCORE+Anxiety_SCORE+Global_Fatigue+Fear_of_COVID_19_
 
 
 # Table 2: Physical Activity
-table1::table1(~ Sedentary_Hrs_Per_Day+Walking_wheeling_Hours_Per_Day+Light_sport_Hours_Per_Day+Moderate_sport_Hours_Per_Day+Strenous_sport_Hours_Per_Day+Exercise_Hours_Per_Day+Light_housework_Hours_Per_Day+
-               Heavy_housework_Hours_Per_Day+Home_repairs_Hours_Per_Day+Yard_work_Hours_Per_Day+Gardening_Hours_Per_Day+Caring_Hours_Per_Day+Work_related_activity_Hours_Per_Day+
-                 Leaving_the_house_to_work_Hours_Per_Day, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
+# Create groups
+
+Sedentary_Hrs_Per_Day_groups<-cut(covid19.survey.data$Sedentary_Hrs_Per_Day, c(-1,0,2,5),
+                                  labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Walking_wheeling_Hours_Per_Day_groups<-cut(covid19.survey.data$Walking_wheeling_Hours_Per_Day, c(-1,0,2,5),
+                                           labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Light_sport_Hours_Per_Day_groups<-cut(covid19.survey.data$Light_sport_Hours_Per_Day, c(-1,0,2,5),
+                                      labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Moderate_sport_Hours_Per_Day_groups<-cut(covid19.survey.data$Moderate_sport_Hours_Per_Day, c(-1,0,2,5),
+                                         labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Strenous_sport_Hours_Per_Day_groups<-cut(covid19.survey.data$Strenous_sport_Hours_Per_Day, c(-1,0,2,5),
+                                         labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Exercise_Hours_Per_Day_groups<-cut(covid19.survey.data$Exercise_Hours_Per_Day, c(-1,0,2,5),
+                                   labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Light_housework_Hours_Per_Day_groups<-cut(covid19.survey.data$Light_housework_Hours_Per_Day, c(-1,0,2,5),
+                                          labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Heavy_housework_Hours_Per_Day_groups<-cut(covid19.survey.data$Heavy_housework_Hours_Per_Day, c(-1,0,2,5),
+                                          labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Home_repairs_Hours_Per_Day_groups<-cut(covid19.survey.data$Home_repairs_Hours_Per_Day, c(-1,0,2,5),
+                                       labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Yard_work_Hours_Per_Day_groups<-cut(covid19.survey.data$Yard_work_Hours_Per_Day, c(-1,0,2,5),
+                                    labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Gardening_Hours_Per_Day_groups<-cut(covid19.survey.data$Gardening_Hours_Per_Day, c(-1,0,2,5),
+                                    labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Caring_Hours_Per_Day_groups<-cut(covid19.survey.data$Caring_Hours_Per_Day, c(-1,0,2,5),
+                                 labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Work_related_activity_Hours_Per_Day_groups<-cut(covid19.survey.data$Work_related_activity_Hours_Per_Day, c(-1,0,2,5),
+                                                labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+
+
+
+table1::table1(~ Sedentary_Hrs_Per_Day+Sedentary_Hrs_Per_Day_groups+
+                 Walking_wheeling_Hours_Per_Day+Walking_wheeling_Hours_Per_Day_groups+
+                 Light_sport_Hours_Per_Day+Light_sport_Hours_Per_Day_groups+
+                 Moderate_sport_Hours_Per_Day+Moderate_sport_Hours_Per_Day_groups+
+                 Strenous_sport_Hours_Per_Day+Strenous_sport_Hours_Per_Day_groups+
+                 Exercise_Hours_Per_Day+Exercise_Hours_Per_Day_groups+
+                 Light_housework_Hours_Per_Day+Light_housework_Hours_Per_Day_groups+
+               Heavy_housework_Hours_Per_Day+Heavy_housework_Hours_Per_Day_groups+
+                 Home_repairs_Hours_Per_Day+Home_repairs_Hours_Per_Day_groups+
+                 Yard_work_Hours_Per_Day+Yard_work_Hours_Per_Day_groups+
+                 Gardening_Hours_Per_Day+Gardening_Hours_Per_Day_groups+
+                 Caring_Hours_Per_Day+Caring_Hours_Per_Day_groups+
+                 Work_related_activity_Hours_Per_Day+Work_related_activity_Hours_Per_Day_groups +LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+PASIDP_SCORE, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
 
 # 7. Draw historgrams and save plots
