@@ -12,46 +12,7 @@ Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS
 ## External resources
 
 ## Folder Structure
-.
-Code
-   ├── .DS_Store
-   ├── 1_COVID-19_Survey.R
-   ├── 2_Normality_testing.R
-   ├── 3_GLM_and_URP.R
-   ├── 4_Likert_graph_covid_survey.R
-   ├── 5_radar_charts_covid_survey.R
-   ├── 6_Likert_graph_covid_survey.R
-   ├── 7_Qualitative_analysis.R
-Figures
-   ├── .DS_Store
-   ├── Density plots 
-   ├── Heat plots  
-   ├── Historgrams 
-   ├── Likert plots
-   ├── Missing data plots 
-   ├── Pie plots  
-   ├── QQ plots
-   ├── Radar plots  
-   ├── URP  
-   ├── Used for manuscript
-      ├──Figure_1.pdf
-   |   ├──Figure_2.pdf
-   |   ├── Figure_3.pdf
-   |   ├── Figure_4.pdf
-├──LICENSE
-├──README.md
-└──Tables
-
-
-   .
-    ├── build                   # Compiled files (alternatively `dist`)
-    ├── docs                    # Documentation files (alternatively `doc`)
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── test                    # Automated tests (alternatively `spec` or `tests`)
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    └── README.md
-
+![alt text](/Git_tree.png)
 
 ## Contact
 Questions or comments related to the manuscript:
