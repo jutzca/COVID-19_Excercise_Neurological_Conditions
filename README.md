@@ -9,8 +9,6 @@ Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS
 
 **Link to paper**: [Preprint](google.com)
 
-## External resources
-
 ## Folder Structure
 ![alt text](/Git_tree.png)
 
