@@ -1,6 +1,7 @@
 # Physical activity and health-related quality of life in adults with a neurologically-related mobility disability during the COVID-19 pandemic: A cross-sectional study
 
-## Abstract
+## :memo:
+:pencil: Abstract
 
 **Authors**: 
 Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS Veldhuijzen van Zanten
