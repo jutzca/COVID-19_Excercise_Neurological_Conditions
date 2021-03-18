@@ -14,10 +14,10 @@ Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS
 
 ## Contact
 Questions or comments related to the manuscript:
-* [Dr. Tom Nightingale](mailto:T.E.Nightingale@bham.ac.uk?subject=[GitHub]%20Source%20Han%20Sans)
+:e-mail:* [Dr. Tom Nightingale](mailto:T.E.Nightingale@bham.ac.uk?subject=[GitHub]%20Source%20Han%20Sans)
 
 This repository is maintained by:
-* [Catherine Jutzeler](https://github.com/jutzca)
+:e-mail:* [Catherine Jutzeler](https://github.com/jutzca)
 
 ## Ethical approval
 Ethical approval was obtained from the University of Birmingham Science, Technology, Engineering and Mathematics ethics committee (ERN_20-0689) (18/05/20). Participants were advised that completion of the survey conferred consent with assurance that anonymity would be preserved through analysis and dissemination. 
