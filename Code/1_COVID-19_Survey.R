@@ -53,11 +53,11 @@ gc() # garbage collector
 ##
 ## Set working directory and output directorypaths
 ##
-setwd("/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
+setwd("/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/")
 ##
 ##
-outdir_figures='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
-outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
+outdir_figures='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Figures/'
+outdir_tables='/Users/jutzelec/Documents/Github/COVID-19_Excercise_Neurological_Conditions/Tables/'
 ##
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
