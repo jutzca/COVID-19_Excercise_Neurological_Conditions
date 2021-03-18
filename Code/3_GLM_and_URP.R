@@ -157,6 +157,19 @@ sjPlot::tab_model(glm.UCLA_Loneliness_SCORE)
 plot(glm.UCLA_Loneliness_SCORE)
 
 
+#--------- Non-linear GLM: Vitality ----------
+
+# Subset data
+covid19.survey.data.SVS_SCORE <-subset(covid19.survey.data, SVS_SCORE> 0)
+
+# Create model
+glm.SVS_SCORE <- glm(SVS_SCORE~Age+as.factor(Sex)+as.factor(Situation)+as.factor(Condition)+as.factor(Mobility_Aid)+LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+Sedentary_Hrs_Per_Day, family = Gamma(), data = covid19.survey.data.UCLA_Loneliness_SCORE)
+summary(glm.SVS_SCORE)
+sjPlot::tab_model(glm.SVS_SCORE)
+
+# Plot model output
+plot(glm.SVS_SCORE)
+
 
 #------------------- Unbiased recursive partitioning ---------------------------
 
