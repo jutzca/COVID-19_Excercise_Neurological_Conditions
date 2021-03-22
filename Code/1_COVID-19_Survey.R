@@ -138,30 +138,9 @@ units(covid19.survey.data$Age) <- "years"
 # Table 1: Demographics
 table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+Situation+GRSI, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
-# Table 2: Outcomes
-Depression_SCORE.grp<-cut(covid19.survey.data$Depression_SCORE, c(-1,7,10,21),
-                                  labels=c("Normal", "Borderline abnormal","Abnormal"))
-
-Anxiety_SCORE.grp<-cut(covid19.survey.data$Anxiety_SCORE, c(-1,7,10,21),
-                          labels=c("Normal", "Borderline abnormal","Abnormal"))
-
-
-table1::table1(~ Global_Fatigue+FSS_SCORE+Depression_SCORE.grp+Anxiety_SCORE.grp+Fear_of_COVID_19_SCORE+UCLA_Loneliness_SCORE+SVS_SCORE+HAQ_SDI_Mean+Pain | Condition, 
-               data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
-
-  # Depression_SCORE
-  # Anxiety_SCORE
-  # 
-  # 0 - 7 = Normal
-  # 8 - 10 = Borderline abnormal (borderline case)
-  # 11 - 21 = Abnormal (case)
-  # 
-
-
-# Table 3: Physical Activity
+# Table 2: Physical Activity
 
 # Create groups
-
 Sedentary_Hrs_Per_Day_groups<-cut(covid19.survey.data$Sedentary_Hrs_Per_Day, c(-1,0,2,5),
                                   labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
 Walking_wheeling_Hours_Per_Day_groups<-cut(covid19.survey.data$Walking_wheeling_Hours_Per_Day, c(-1,0,2,5),
@@ -204,6 +183,20 @@ table1::table1(~ Sedentary_Hrs_Per_Day+Sedentary_Hrs_Per_Day_groups+
                  Gardening_Hours_Per_Day+Gardening_Hours_Per_Day_groups+
                  Caring_Hours_Per_Day+Caring_Hours_Per_Day_groups+
                  Work_related_activity_Hours_Per_Day+Work_related_activity_Hours_Per_Day_groups +LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+PASIDP_SCORE, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
+
+# Table 3: Outcomes
+Depression_SCORE.grp<-cut(covid19.survey.data$Depression_SCORE, c(-1,7,10,21),
+                          labels=c("Normal", "Borderline abnormal","Abnormal"))
+
+Anxiety_SCORE.grp<-cut(covid19.survey.data$Anxiety_SCORE, c(-1,7,10,21),
+                       labels=c("Normal", "Borderline abnormal","Abnormal"))
+
+
+table1::table1(~ HAQ_SDI_Mean+Pain+Fear_of_COVID_19_SCORE+UCLA_Loneliness_SCORE+SVS_SCORE+FSS_SCORE+Global_Fatigue+Anxiety_SCORE+Anxiety_SCORE.grp+Depression_SCORE+Depression_SCORE.grp| Condition, 
+               data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
+
 
 
 # 7. Draw historgrams and save plots
