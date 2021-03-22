@@ -139,8 +139,23 @@ units(covid19.survey.data$Age) <- "years"
 table1::table1(~ Sex+Age+Ethnicity+Condition+Mobility_Aid+Situation+GRSI, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
 # Table 2: Outcomes
-table1::table1(~ Depression_SCORE+Anxiety_SCORE+Global_Fatigue+Fear_of_COVID_19_SCORE+UCLA_Loneliness_SCORE+SVS_SCORE+HAQ_SDI_Mean+Pain+Sedentary_Hrs_Per_Day+Exercise_SCORE+LTPA_SCORE | Condition, 
+Depression_SCORE.grp<-cut(covid19.survey.data$Depression_SCORE, c(-1,7,10,21),
+                                  labels=c("Normal", "Borderline abnormal","Abnormal"))
+
+Anxiety_SCORE.grp<-cut(covid19.survey.data$Anxiety_SCORE, c(-1,7,10,21),
+                          labels=c("Normal", "Borderline abnormal","Abnormal"))
+
+
+table1::table1(~ Global_Fatigue+FSS_SCORE+Depression_SCORE.grp+Anxiety_SCORE.grp+Fear_of_COVID_19_SCORE+UCLA_Loneliness_SCORE+SVS_SCORE+HAQ_SDI_Mean+Pain | Condition, 
                data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+
+  # Depression_SCORE
+  # Anxiety_SCORE
+  # 
+  # 0 - 7 = Normal
+  # 8 - 10 = Borderline abnormal (borderline case)
+  # 11 - 21 = Abnormal (case)
+  # 
 
 
 # Table 3: Physical Activity
