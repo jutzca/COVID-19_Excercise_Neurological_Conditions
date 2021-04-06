@@ -10,8 +10,10 @@ Tom E. Nightingale, Catherine R. Jutzeler, SAM Fenton,  Nicola R. Heneghan, JJCS
 :link: **Link to paper**: [Preprint](google.com)
 
 ## Organizational Structure of Repository
-![alt text](/Git_tree.png)
 
+
+
+![alt text](/Git_tree.png)
 ## Contact
 Questions or comments related to the manuscript:
 * :e-mail:[Dr. Tom Nightingale](mailto:T.E.Nightingale@bham.ac.uk?subject=[GitHub]%20Source%20Han%20Sans)
