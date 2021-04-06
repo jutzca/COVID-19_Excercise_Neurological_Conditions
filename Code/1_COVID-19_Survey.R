@@ -167,6 +167,14 @@ Caring_Hours_Per_Day_groups<-cut(covid19.survey.data$Caring_Hours_Per_Day, c(-1,
                                  labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
 Work_related_activity_Hours_Per_Day_groups<-cut(covid19.survey.data$Work_related_activity_Hours_Per_Day, c(-1,0,2,5),
                                                 labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+LTPA_SCORE.grps<-cut(covid19.survey.data$LTPA_SCORE, c(-1,0,2,100),
+                                                labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+PASIDP_SCORE.grps<-cut(covid19.survey.data$PASIDP_SCORE, c(-1,0,2,100),
+                     labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Work_related_activity_SCORE.grps<-cut(covid19.survey.data$Work_related_activity_SCORE, c(-1,0,2,100),
+                       labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
+Household_activity_SCORE.grps<-cut(covid19.survey.data$Household_activity_SCORE, c(-1,0,2,100),
+                       labels=c("0 hrs", ">0-2 hrs",">2 hrs"))
 
 
 
@@ -182,7 +190,11 @@ table1::table1(~ Sedentary_Hrs_Per_Day+Sedentary_Hrs_Per_Day_groups+
                  Yard_work_Hours_Per_Day+Yard_work_Hours_Per_Day_groups+
                  Gardening_Hours_Per_Day+Gardening_Hours_Per_Day_groups+
                  Caring_Hours_Per_Day+Caring_Hours_Per_Day_groups+
-                 Work_related_activity_Hours_Per_Day+Work_related_activity_Hours_Per_Day_groups +LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+PASIDP_SCORE, data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
+                 Work_related_activity_Hours_Per_Day+Work_related_activity_Hours_Per_Day_groups +
+                 LTPA_SCORE+Household_activity_SCORE+Work_related_activity_SCORE+
+                 PASIDP_SCORE+LTPA_SCORE.grps+PASIDP_SCORE.grps+
+                 Household_activity_SCORE.grps+Work_related_activity_SCORE.grps
+                 , data = covid19.survey.data, render.continuous=c(.="Median [Q1, Q3]"))
 
 
 # Table 3: Outcomes
