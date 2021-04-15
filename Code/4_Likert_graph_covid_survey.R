@@ -69,7 +69,7 @@ outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Co
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
 # Load original data
-covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
+covid19.survey.data <- read.csv("~/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 names(covid19.survey.data)
 
 # Relabel variable levels

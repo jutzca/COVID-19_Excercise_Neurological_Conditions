@@ -59,13 +59,13 @@ outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Co
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
 # Load original data
-covid19.qual.data.facilitator <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid_survey_qual_data_facilitator.csv", header = T, sep = ',')
+covid19.qual.data.facilitator <- read.csv("~/19_COVID_Survey/covid_survey_qual_data_facilitator.csv", header = T, sep = ',')
 names(covid19.qual.data.facilitator)
 
-covid19.qual.data.challenges<- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid_survey_qual_data_challenges.csv", header = T, sep = ',')
+covid19.qual.data.challenges<- read.csv("~/19_COVID_Survey/covid_survey_qual_data_challenges.csv", header = T, sep = ',')
 names(covid19.qual.data.challenges)
 
-covid19.qual.data.barrier<- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid_survey_qual_data_barrier.csv", header = T, sep = ',')
+covid19.qual.data.barrier<- read.csv("~/19_COVID_Survey/covid_survey_qual_data_barrier.csv", header = T, sep = ',')
 names(covid19.qual.data.barrier)
 
 

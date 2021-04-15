@@ -69,7 +69,7 @@ outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Co
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
 # Load original data
-covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
+covid19.survey.data <- read.csv("~/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 
 # Display all the variable names
 names(covid19.survey.data)
@@ -142,6 +142,8 @@ sjPlot::tab_model(glm.FSS_SCORE)
 # Plot model output
 plot(glm.FSS_SCORE)
 
+
+plot(covid19.survey.data.FSS_SCORE$FSS_SCORE, covid19.survey.data.FSS_SCORE$LTPA_SCORE)
 
 #--------- Non-linear GLM: Loneliness ----------
 
