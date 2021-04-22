@@ -69,7 +69,7 @@ outdir_tables='/Users/jutzca/Documents/Github/COVID-19_Excercise_Neurological_Co
 #### -------------------------------------------------------------------------- CODE START ------------------------------------------------------------------------------------------------####
 
 # Load original data
-covid19.survey.data <- read.csv("~/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
+covid19.survey.data <- read.csv("/Volumes/jutzelec$/8_Projects/1_Ongoing/19_COVID_Survey/covid19_data_survey.csv", header = T, sep = ',')
 names(covid19.survey.data)
 
 # Relabel variable levels
@@ -216,7 +216,7 @@ dev.off()
 covid19.survey.data.change.in.PA.sex <- covid19.survey.data2 %>%
   group_by(Sex, Change_in_PA) %>%
   dplyr::summarise(n = n()) %>%
-  mutate(freq = n / sum(n))%>%
+  dplyr::mutate(freq = n / sum(n))%>%
   as.data.frame()
 covid19.survey.data.change.in.PA.sex
 
@@ -225,13 +225,14 @@ write.csv(covid19.survey.data.change.in.PA.sex,"/Users/jutzca/Documents/Github/C
 
 
 # Reformat dataframe from long to wide
-covid19.survey.data.change.in.PA.wide <-reshape(data=covid19.survey.data.change.in.PA.sex, timevar = "Change_in_PA", idvar = "Sex", direction = "wide")
+covid19.survey.data.change.in.PA.wide.sex <-reshape(data=covid19.survey.data.change.in.PA.sex, timevar = "Change_in_PA", idvar = "Sex", direction = "wide")
 
 # Subset data
-covid19.survey.data.change.in.PA.wide_subset <-covid19.survey.data.change.in.PA.wide[, -c(2,4,6,8,10)]
+covid19.survey.data.change.in.PA.wide.sex_subset <-covid19.survey.data.change.in.PA.wide.sex[, -c(2,3,4,6,8,10,12)]
+
 
 # Reorder data to follow the levels: "considerably less", "slightly less", "about the same", "slightly more",  "considerably more"
-likert.graph.data <- covid19.survey.data.change.in.PA.wide_subset[,c(1,3,5,2,6,4)]
+likert.graph.data <- covid19.survey.data.change.in.PA.wide.sex_subset[,c(1,3,5,2,6,4)]
 
 # Replace NA's with 0
 likert.graph.data[is.na(likert.graph.data)] <- 0
@@ -329,7 +330,7 @@ ggsave(
   device = 'pdf',
   path = outdir_figures,
   scale = 1,
-  width = 6,
+  width = 10,
   height = 4,
   units = "in",
   dpi = 300
@@ -337,14 +338,13 @@ ggsave(
 
 dev.off()
 
-
 #---------- Plot for mobility aid ---------- 
 
 # Calculate the proportions per mobility aid
 covid19.survey.data.change.in.PA.mob.aid <- covid19.survey.data2 %>%
   group_by(Mobility_Aid, Change_in_PA) %>%
   dplyr::summarise(n = n()) %>%
-  mutate(freq = n / sum(n))%>%
+  dplyr::mutate(freq = n / sum(n))%>%
   as.data.frame()
 covid19.survey.data.change.in.PA.mob.aid
 
@@ -456,7 +456,7 @@ ggsave(
   device = 'pdf',
   path = outdir_figures,
   scale = 1,
-  width = 6,
+  width = 10,
   height = 4,
   units = "in",
   dpi = 300
